@@ -1,0 +1,1029 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>TOKITOKI case study</title>
+<meta name="description" content="How Rajla designed TOKITOKI, one place for every event in Albania, for the fans who go and the organisers who run them.">
+<meta name="page-id" content="tokitoki">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400..700&amp;family=Geist+Mono:wght@400;500;600&amp;family=Corinthia:wght@400;700&amp;family=Anton&amp;display=swap">
+<script>
+  /* Images in the claude.ai viewer (30 Oct): the viewer lets the page load
+     its own files with a cookie, and Safari (every browser on iPhone) blocks
+     that cookie inside frames, so the images failed there. When one fails,
+     ask for the files again with the access key from the page's own address. */
+  (function () {
+    var key = '';
+    try {
+      var re = /[?&]__frame_t=([^&#]+)/, nav = performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
+      var m = re.exec(location.search) || (nav && re.exec(nav.name || ''));
+      if (m) key = m[1];
+    } catch (e) {}
+    if (!key) return;
+    var on = false, SEL = 'img, video, source';
+    function add(v) {
+      return v.replace(/(^|,\s*)([^\s,]+)/g, function (all, pre, u) {
+        if (/^(?:[a-z][a-z0-9+.-]*:|\/\/|#)/i.test(u) || /[?&]__frame_t=/.test(u)) return all;
+        return pre + u + (u.indexOf('?') > -1 ? '&' : '?') + '__frame_t=' + key;
+      });
+    }
+    /* returns the video to reload, if any */
+    function fix(el) {
+      var moved = false;
+      ['src', 'srcset', 'poster'].forEach(function (a) {
+        var v = el.getAttribute(a);
+        if (v) { var n = add(v); if (n !== v) { el.setAttribute(a, n); if (a !== 'poster') moved = true; } }
+      });
+      if (!moved) return null;
+      if (el.tagName === 'VIDEO') return el;
+      return el.tagName === 'SOURCE' && el.parentNode && el.parentNode.tagName === 'VIDEO' ? el.parentNode : null;
+    }
+    function fixIn(root) {
+      var vids = [];
+      if (root.matches && root.matches(SEL)) { var v0 = fix(root); if (v0) vids.push(v0); }
+      if (root.querySelectorAll) root.querySelectorAll(SEL).forEach(function (el) { var v = fix(el); if (v && vids.indexOf(v) < 0) vids.push(v); });
+      vids.forEach(function (v) { try { v.load(); } catch (e) {} });
+    }
+    function turnOn() {
+      if (on) return;
+      on = true;
+      var all = function () { fixIn(document); };
+      if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', all); else all();
+      new MutationObserver(function (list) {
+        list.forEach(function (r) { r.addedNodes.forEach(function (n) { if (n.nodeType === 1) fixIn(n); }); });
+      }).observe(document.documentElement, { childList: true, subtree: true });
+    }
+    /* pages of this portfolio, opened once the images needed the key, carry it too */
+    document.addEventListener('click', function (e) {
+      if (!on || !e.target.closest) return;
+      var a = e.target.closest('a[href]'), h = a && a.getAttribute('href');
+      if (!h || a.target === '_blank' || !/^[^:?#\/]+\.html(#.*)?$/i.test(h)) return;
+      var i = h.indexOf('#');
+      a.setAttribute('href', (i < 0 ? h : h.slice(0, i)) + '?__frame_t=' + key + (i < 0 ? '' : h.slice(i)));
+    }, true);
+    addEventListener('error', function (e) {
+      var el = e.target;
+      if (!el || !el.tagName || !/^(IMG|SOURCE|VIDEO)$/.test(el.tagName)) return;
+      turnOn();
+      fixIn(el);
+    }, true);
+  })();
+
+</script>
+<script>
+  /* Entrance animations, unless the visitor prefers reduced motion */
+  (function () {
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var r = document.documentElement;
+    r.classList.add('motion');
+    setTimeout(function () { if (!window.__motionReady) r.classList.remove('motion'); }, 3000);
+  })();
+</script>
+<style>
+/* =====================================================================
+   SHARED STYLES (used by every page; inlined by src/build.py)
+   Concept: the site is a design canvas. Frames on a light grey ground, selection
+   boxes and comment pins, with a glass top bar.
+   Motion: small distances (6-18px), short times (0.2-0.8s), one ease.
+   ===================================================================== */
+:root {
+  --canvas: #F7F7F7;
+  --frame: #FFFFFF;
+  --folder: #FAFAFB;
+  --folder-2: #EDEFF3;
+  --ink: #16181D;
+  --ink-2: #59606C;
+  --line: #E1E4E9;
+  --select: #1F6FEB;
+  --select-soft: rgba(31, 111, 235, .10);
+  --on-select: #FFFFFF;
+  --redline: #D12C73;
+  --on-redline: #FFFFFF;
+  --note-bg: #FCEAF2;
+  --c3: #0B8A51;
+  --on-c3: #FFFFFF;
+  --t1: #DCEFE4;
+  --t2: #F5E7CF;
+  --t3: #E6E0F7;
+  --t4: #DCE8FB;
+  --sh: rgba(22, 24, 29, .08);
+  --sh-strong: rgba(22, 24, 29, .16);
+  /* Liquid glass */
+  --glass-bg: rgba(255, 255, 255, .45);
+  --glass-rim: rgba(255, 255, 255, .95);
+  --glass-rim-2: rgba(255, 255, 255, .3);
+  --glass-edge: rgba(22, 24, 29, .07);
+  --glass-sheen: rgba(255, 255, 255, .7);
+  /* Dock tiles keep the same colors in both themes, with white icons */
+  --tile-ink: #1D2027;
+  --tile-blue: #2F7BF5;
+  --tile-violet: #7B4FE0;
+  --tile-green: #179E58;
+  --tile-amber: #E08A0F;
+  --tile-pink: #DB3A80;
+  --on-tile: #FFFFFF;
+  /* Butterfly logo (a small blue morpho) */
+  --bf-ant: #04060D;
+
+  --font-display: "Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Geist", "Helvetica Neue", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  --ease: cubic-bezier(.22, 1, .36, 1);
+  --ease-pop: cubic-bezier(.34, 1.56, .64, 1);
+  --fs-body: 1.0625rem;
+  --fs-mono: .75rem;
+  --radius: 20px;
+  --max: 1180px;
+}
+
+/* light only (30 Oct, Rajla): the viewer can ask the page for dark; it stays light */
+:root { color-scheme: light !important; }
+
+/* ---------- Base ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+body {
+  margin: 0;
+  padding-inline: clamp(16px, 4vw, 40px);
+  background-color: var(--canvas);
+  color: var(--ink);
+  font: 400 var(--fs-body)/1.6 var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+}
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--select); outline-offset: 3px; border-radius: 8px; }
+h1, h2, h3 { text-wrap: balance; }
+p { text-wrap: pretty; }
+.mono { font-family: var(--font-mono); }
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  font: 500 .95rem/1 var(--font-body);
+  padding: 14px 20px; border-radius: 999px;
+  background: var(--ink); color: var(--canvas); border: 1px solid var(--ink);
+  text-decoration: none; cursor: pointer;
+  transition: background-color .2s, border-color .2s, color .2s, translate .35s var(--ease), box-shadow .35s var(--ease);
+}
+.btn:hover { translate: 0 -2px; box-shadow: 0 10px 24px -10px var(--sh-strong); }
+.btn:active { translate: 0 0; transition-duration: .1s; }
+.btn-blue { background: var(--select); border-color: var(--select); color: var(--on-select); }
+.btn-ghost { background: var(--frame); color: var(--ink); border-color: var(--line); }
+.btn-ghost:hover { border-color: var(--select); color: var(--select); }
+.btn-small { padding: 10px 14px; font-size: .875rem; }
+
+/* ---------- Labels, notes, placeholders ---------- */
+.frame-label { display: flex; align-items: center; gap: 8px; margin: 0; font: 500 var(--fs-mono)/1 var(--font-mono); letter-spacing: .02em; color: var(--ink-2); }
+/* no "#" before the labels (24 Oct, Rajla) */
+.frame-label span { opacity: .7; }
+.frame-label span::before { content: "· "; }
+
+.note {
+  display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 12px; align-items: start;
+  max-width: 580px; padding: 14px 16px;
+  background: var(--note-bg); color: var(--ink);
+  border: 1px solid color-mix(in srgb, var(--redline) 35%, transparent);
+  border-radius: 4px 18px 18px 18px;
+  font-size: .9rem; line-height: 1.5;
+}
+.note p { margin: 0; }
+.note-pin { width: 26px; height: 26px; border-radius: 50% 50% 50% 4px; background: var(--redline); color: var(--on-redline); display: grid; place-items: center; font: 600 .68rem/1 var(--font-mono); }
+.note-title { display: block; margin-bottom: 3px; font: 600 .7rem/1.4 var(--font-mono); text-transform: uppercase; letter-spacing: .07em; color: var(--redline); }
+.notes-off .note, .notes-off .example-chip { display: none; }
+.ph { background: color-mix(in srgb, var(--redline) 10%, transparent); border-bottom: 1.5px dashed var(--redline); padding: 0 3px; border-radius: 3px; }
+.notes-off .ph { background: transparent; border-bottom: 0; padding: 0; border-radius: 0; }
+.example-chip { padding: 5px 8px; border-radius: 4px 999px 999px 999px; background: var(--redline); color: var(--on-redline); font: 500 11px/1 var(--font-mono); white-space: nowrap; }
+
+/* ---------- Motion system ----------
+   Elements start hidden ONLY when <html> has the "motion" class
+   (added by a tiny script, skipped for reduced motion). */
+.motion [data-anim~="reveal"] {
+  opacity: 0; translate: 0 16px; scale: .985;
+  transition: opacity .7s var(--ease), translate .8s var(--ease), scale .8s var(--ease);
+  transition-delay: var(--delay, 0s);
+}
+.motion [data-anim~="reveal"].in { opacity: 1; translate: 0 0; scale: 1; }
+.motion [data-anim~="stagger"] > * {
+  opacity: 0; translate: 0 12px; scale: .98;
+  transition: opacity .6s var(--ease), translate .7s var(--ease), scale .7s var(--ease);
+  transition-delay: calc(var(--si, 0) * 80ms);
+}
+.motion [data-anim~="stagger"].in > * { opacity: 1; translate: 0 0; scale: 1; }
+
+@keyframes fade-up { from { opacity: 0; translate: 0 18px; } }
+@keyframes pop { 0% { scale: 1; } 40% { scale: .86; } 100% { scale: 1; } }
+@keyframes shimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+.shimmer {
+  color: transparent;
+  background: linear-gradient(90deg, var(--ink-2) 30%, var(--line) 50%, var(--ink-2) 70%) 0 0 / 200% 100%;
+  -webkit-background-clip: text; background-clip: text;
+  animation: shimmer 2s linear infinite;
+}
+
+/* ---------- Liquid glass (top bar) ----------
+   Frosted, saturated blur with a bright rim and a soft sheen that
+   follows the pointer. Content scrolls underneath it. */
+.glass {
+  position: relative; isolation: isolate;
+  background-color: var(--glass-bg);
+  background-image: radial-gradient(220px 90px at var(--mx, 30%) 0%, var(--glass-sheen), transparent 70%);
+  -webkit-backdrop-filter: blur(16px) saturate(1.9) brightness(1.04);
+  backdrop-filter: blur(16px) saturate(1.9) brightness(1.04);
+  border: 1px solid var(--glass-edge);
+  box-shadow: inset 0 1px 1px var(--glass-rim), inset 0 -1px 1px var(--glass-rim-2), 0 1px 2px var(--sh), 0 14px 34px -16px var(--sh-strong);
+}
+.glass::before {
+  content: ""; position: absolute; inset: -1px; z-index: -1; border-radius: inherit; padding: 1.5px; pointer-events: none;
+  background: linear-gradient(115deg, var(--glass-rim), transparent 26%, transparent 72%, var(--glass-rim));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); mask-composite: exclude;
+}
+.topbar {
+  position: sticky; top: calc(12px + env(safe-area-inset-top, 0px)); z-index: 55;
+  max-width: var(--max); margin: 14px auto 0;
+  display: flex; align-items: center; gap: 14px;
+  padding: 7px 7px 7px 8px; border-radius: 999px;
+}
+.topbar .brand-mark { border-radius: 50%; }
+.topbar .btn { flex: none; white-space: nowrap; margin-left: auto; }
+
+
+/* ---------- Butterfly logo: a small blue morpho, like the one that lands on the name.
+   Flaps twice, glides, repeats; flaps fast on hover ---------- */
+.bfly { display: block; width: 100%; height: 100%; overflow: visible; stroke: none; animation: bf-float 2.8s ease-in-out infinite; }
+.bfly .wing { transform-box: view-box; transform-origin: 16px 16px; animation: bf-flap 2.8s ease-in-out infinite; }
+.bfly .w-rim { fill: #03050E; }
+.bfly .sp-w { fill: rgb(255 255 255 / .95); }
+.bfly .sp-b { fill: rgb(150 210 255 / .95); }
+.bfly .b-ant { fill: none; stroke: var(--bf-ant); stroke-width: .55; stroke-linecap: round; }
+.bfly .b-tip { fill: var(--bf-ant); }
+a:hover .bfly .wing, a:focus-visible .bfly .wing { animation: bf-flap-fast .32s ease-in-out infinite; }
+@keyframes bf-flap { 0%, 40%, 100% { transform: scaleX(1); } 8%, 24% { transform: scaleX(.22); } 16%, 32% { transform: scaleX(1); } }
+@keyframes bf-flap-fast { 50% { transform: scaleX(.2); } }
+@keyframes bf-float { 0%, 100% { translate: 0 0; } 20% { translate: 0 -1.5px; } 50% { translate: 0 .5px; } }
+
+/* ---------- Your cursor's tag (and the project preview card) ---------- */
+.follow { position: fixed; left: 0; top: 0; z-index: 65; pointer-events: none; display: none; }
+.has-follow .follow { display: block; }
+.follow-in { opacity: 0; scale: .6; transform-origin: 0 0; transition: opacity .2s, scale .35s var(--ease); }
+.follow.on .follow-in { opacity: 1; scale: 1; }
+.follow.on.no-tag .follow-in { opacity: 0; scale: .6; }
+.follow-label.swap { animation: tag-swap .35s var(--ease-pop); transform-origin: 0 0; }
+@keyframes tag-swap { from { scale: .82; } }
+.follow-label { display: inline-block; margin: 14px 0 0 14px; padding: 7px 11px; border-radius: 3px 999px 999px 999px; background: var(--select); color: var(--on-select); font: 500 .8rem/1 var(--font-body); white-space: nowrap; }
+.follow-card { display: none; width: 220px; margin: 18px 0 0 18px; padding: 14px; border-radius: 16px; background: var(--pc, var(--t4)); border: 1px solid var(--line); box-shadow: 0 22px 44px -20px var(--sh-strong); rotate: -3deg; }
+.follow[data-mode="preview"] .follow-label { display: none; }
+.follow[data-mode="preview"] .follow-card { display: grid; gap: 8px; }
+.follow-card .fc-screen { display: grid; gap: 6px; padding: 12px; border-radius: 10px; background: var(--frame); }
+.follow-card .fc-screen i { display: block; height: 7px; border-radius: 4px; background: var(--line); }
+.follow-card .fc-screen i:nth-child(1) { width: 60%; height: 10px; background: var(--ink); opacity: .8; }
+.follow-card .fc-screen i:nth-child(3) { width: 80%; }
+.follow-card .fc-screen i:nth-child(4) { width: 40%; height: 22px; border-radius: 6px; background: var(--select); opacity: .9; margin-top: 4px; }
+.follow-card b { font: 600 .82rem/1.3 var(--font-display); color: var(--ink); }
+
+/* ---------- Toast ---------- */
+.toast { position: fixed; left: 50%; bottom: calc(24px + env(safe-area-inset-bottom, 0px)); z-index: 80; max-width: calc(100vw - 32px); padding: 12px 16px; border-radius: 12px; background: var(--ink); color: var(--canvas); font-size: .9rem; opacity: 0; translate: -50% 12px; transition: opacity .25s, translate .4s var(--ease); pointer-events: none; }
+.toast.show { opacity: 1; translate: -50% 0; }
+
+/* ---------- Footer ---------- */
+.footer { max-width: var(--max); margin: clamp(96px, 12vw, 150px) auto 0; padding-block: 22px 48px; align-items: center; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px 24px; border-top: 1px dashed var(--line); font: 500 var(--fs-mono)/1.5 var(--font-mono); color: var(--ink-2); }
+.footer a { color: var(--ink); }
+/* footer line in the site's secondary type, Geist with wide spacing like the eyebrow (30 Oct, Rajla) */
+.footer > span, .footer-row > span, .footer > a, .footer-row > a { font: 400 .72rem/1.6 var(--font-body); letter-spacing: .16em; text-transform: uppercase; color: var(--hero-sub, var(--ink-2)); }
+.footer > a:hover, .footer-row > a:hover { color: var(--hero-ink, var(--ink)); }
+/* Template notes on/off (builder aid: turn off before sharing) */
+[data-notes-toggle] { display: none !important; }
+.is-editing [data-notes-toggle], body:not(.notes-off) [data-notes-toggle] { display: inline-flex !important; }
+.foot-btn { display: inline-flex; align-items: center; gap: 8px; padding: 7px 12px; border-radius: 999px; border: 1px solid var(--line); background: transparent; color: var(--ink-2); font: inherit; cursor: pointer; transition: border-color .2s, color .2s; }
+.foot-btn:hover { border-color: var(--redline); color: var(--ink); }
+.foot-btn i { width: 8px; height: 8px; border-radius: 50%; background: var(--redline); transition: opacity .2s; }
+.foot-btn[aria-pressed="false"] i { opacity: .3; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition-duration: .01ms !important; }
+}
+
+/* ---------- Edit text on the page (temporary, owner and editors only) ---------- */
+.ed-bar { position: fixed; left: 16px; bottom: calc(16px + env(safe-area-inset-bottom, 0px)); z-index: 75; display: flex; align-items: center; gap: 10px; max-width: calc(100vw - 32px); padding: 6px; border-radius: 999px; font: 500 .85rem/1.2 var(--font-body); color: var(--ink); }
+.ed-bar button { flex: none; display: inline-flex; align-items: center; gap: 8px; height: 36px; padding: 0 14px; border: 0; border-radius: 999px; font: inherit; cursor: pointer; }
+.ed-toggle { background: var(--hero-ink, var(--select)); color: var(--on-hero-ink, #fff); }
+.ed-toggle svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linejoin: round; stroke-linecap: round; }
+.ed-reset { background: var(--frame); color: var(--ink); box-shadow: inset 0 0 0 1px var(--line); }
+.ed-status { min-width: 0; padding-right: 8px; font-weight: 400; color: var(--ink-2); }
+.ed-status:empty { display: none; }
+.is-editing [data-ek] { outline: 1px dashed color-mix(in srgb, var(--select) 50%, transparent); outline-offset: 3px; border-radius: 2px; cursor: text; }
+.is-editing [data-ek]:hover { outline-color: var(--select); }
+.is-editing [data-ek]:focus { outline: 2px solid var(--select); outline-offset: 3px; background: var(--select-soft); }
+.is-editing a:has([data-ek]) { cursor: text; }
+@media (max-width: 560px) { .ed-bar { left: 50%; translate: -50% 0; } .ed-status { display: none; } }
+.is-editing .follow { display: none; }
+
+/* =====================================================================
+   CASE STUDY PAGES (finflux.html, tokitoki.html), inlined by src/build.py
+   Layout after hellodani.co/corti, in this site's style: the project name
+   in Corinthia like the hero, a one-line statement, a project overview,
+   then the story in labelled sections with large image slots in between.
+   Each image slot is numbered (FF-1, TT-1 ...) until the real image is in.
+   ===================================================================== */
+:root { --hero-ink: #000F81; --work-ink: #000B5C; --on-hero-ink: #FFFFFF; --hero-sub: #5E5E5E; --bento-ph: #E6E6E6; --tile-ph-text: #8C8C8C;
+  --font-script: "Corinthia", "Brush Script MT", cursive; --col: 1012px; }
+
+.file { display: inline-flex; align-items: center; gap: 10px; min-width: 0; text-decoration: none; }
+.brand-mark { position: relative; flex: none; width: 32px; height: 32px; display: grid; place-items: center; }
+.crumb { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: .9rem; color: var(--ink-2); }
+.crumb b { color: var(--ink); font-weight: 600; }
+.btn-ink { background: var(--hero-ink); border-color: var(--hero-ink); color: var(--on-hero-ink); }
+
+/* reading progress, in the project's colour */
+.progress { position: fixed; left: 0; top: 0; z-index: 70; width: 100%; height: 3px; background: var(--acc); transform-origin: 0 50%; transform: scaleX(0); }
+
+.case { max-width: var(--col); margin: 0 auto; }
+
+/* ---------- Opening ---------- */
+.case-open { padding-top: clamp(44px, 6vw, 88px); }
+/* the title: project name in navy, joined to the statement, in the page's
+   secondary font (Geist), like "Corti: building a visual identity..." */
+.case-title { margin: 0; max-width: 19em; font: 400 clamp(2rem, 1.15rem + 2.9vw, 3.3rem)/1.12 var(--font-body); letter-spacing: -.025em; color: var(--ink); text-wrap: balance; }
+.case-name { font-weight: 500; color: var(--hero-ink); }
+/* TOKITOKI (26 Oct, Rajla: "make the blue text orange on this page"): the
+   page's navy text turns orange. Small text uses a deeper orange that keeps
+   4.5:1 contrast; the big project name and the next-case name use the brand
+   orange of the logo. The top bar stays as on every page. */
+.case.tone-orange { --hero-ink: #C24A22; --work-ink: #C24A22; --tone-big: #DD5D31; --br-glow: rgb(178 66 28 / .4); }
+.tone-orange .case-name { color: var(--tone-big); }
+/* TOKITOKI screens sit flat on the page; their soft shadow only shows while
+   the pointer is over one (27 Oct, Rajla) */
+.tone-orange .slot-browser { box-shadow: 0 0 0 1px var(--line); transition: box-shadow .5s var(--ease); }
+.tone-orange .slot-browser:hover { box-shadow: 0 0 0 1px var(--line), 0 40px 80px -48px var(--br-glow), 0 12px 28px -18px var(--sh-strong); }
+.case-sub { margin: clamp(16px, 1.8vw, 26px) 0 0; max-width: 60ch; font: 400 clamp(.9rem, .82rem + .3vw, 1.0625rem)/1.75 var(--font-body); letter-spacing: .08em; color: var(--hero-sub); }
+.motion .case-fade { animation: fade-up .8s var(--ease) both; animation-delay: var(--d, 0s); }
+
+/* project overview */
+.case-meta { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 22px clamp(18px, 2.4vw, 36px); margin: clamp(36px, 4.4vw, 60px) 0 0; padding: clamp(20px, 2.2vw, 28px) 0 0; border-top: 1px solid var(--line); }
+.case-meta div { min-width: 0; }
+.case-meta dt { margin: 0 0 8px; font: 400 .7rem/1.3 var(--font-body); letter-spacing: .16em; text-transform: uppercase; color: var(--hero-sub); }
+.case-meta dd { margin: 0; font-size: .95rem; line-height: 1.55; color: var(--ink); }
+.case-meta dd span { display: block; }
+
+/* ---------- Image slots (placeholders until the real images are in) ---------- */
+.slot { position: relative; margin: 0; overflow: hidden; display: grid; place-items: center; border-radius: clamp(24px, 3.4vw, 48px); background: var(--bento-ph); }
+.slot img, .slot video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.slot-tag { display: grid; justify-items: center; gap: 10px; padding: 16px; text-align: center; font: 500 .72rem/1.5 var(--font-mono); color: var(--tile-ph-text); }
+.slot-tag svg { width: 30px; height: 30px; fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; opacity: .8; }
+.slot-tag b { font-weight: 600; color: var(--ink-2); letter-spacing: .04em; }
+.notes-off .slot-tag { visibility: hidden; }
+.r-wide { aspect-ratio: 16 / 10; }
+.r-square { aspect-ratio: 1; }
+.r-tall { aspect-ratio: 4 / 5; }
+/* a screen recording in a simple browser window (e.g. FF-1) */
+.slot-browser { position: relative; margin: 0; overflow: hidden; border-radius: clamp(14px, 1.8vw, 22px); background: var(--frame); box-shadow: 0 0 0 1px var(--line), 0 40px 80px -48px var(--br-glow, rgb(0 15 129 / .45)), 0 12px 28px -18px var(--sh-strong); }
+.br-bar { display: flex; align-items: center; gap: 7px; height: clamp(32px, 3vw, 42px); padding: 0 clamp(12px, 1.4vw, 18px); border-bottom: 1px solid var(--line); background: var(--frame); }
+.br-bar i { width: 11px; height: 11px; border-radius: 50%; background: #E1E4E9; }
+.br-bar i:nth-child(1) { background: #FF5F57; } .br-bar i:nth-child(2) { background: #FEBC2E; } .br-bar i:nth-child(3) { background: #28C840; }
+.br-bar span { flex: 0 1 260px; margin: 0 auto; padding: 5px 12px; border-radius: 999px; background: var(--canvas); text-align: center; font: 400 .74rem/1.2 var(--font-body); letter-spacing: .02em; color: var(--ink-2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; transform: translateX(-24px); }
+/* a small recording floating as a card on a deep blue backdrop (e.g. FF-6) */
+.slot-card { background: radial-gradient(120% 90% at 30% 20%, #2440D0 0%, #0E1F8A 45%, #050B3A 100%); }
+.slot .card-video { position: absolute; inset: auto; left: 50%; top: 50%; translate: -50% -50%; width: auto; height: 84%; max-width: 86%; object-fit: cover; border-radius: clamp(12px, 1.6vw, 20px); background: #F0F6FE; box-shadow: 0 0 0 1px rgb(255 255 255 / .18), 0 34px 60px -24px rgb(0 0 0 / .6); transition: transform .7s var(--ease); }
+.slot-card:hover .card-video { transform: translateY(-4px); }
+.slot-card.is-light { background: radial-gradient(120% 90% at 30% 20%, #F3F5FF 0%, #E2E7FD 50%, #C9D2FA 100%); }
+.slot-card.is-light .card-video { background: #0B145A; box-shadow: 0 0 0 1px rgb(0 15 129 / .12), 0 34px 60px -26px rgb(0 15 129 / .55); }
+/* a clip whose right side is cut off in the recording sits flush against the
+   tile's right edge, as if it slides out from there (e.g. the sidebar, FF-7) */
+.slot-card.edge-right .card-video { left: auto; right: 0; translate: 0 -50%; height: 94%; max-width: none; border-radius: clamp(12px, 1.6vw, 20px) 0 0 clamp(12px, 1.6vw, 20px); box-shadow: 0 0 0 1px rgb(0 15 129 / .12), -24px 30px 60px -26px rgb(0 15 129 / .5); }
+.slot-card.edge-right:hover .card-video { transform: translateX(-6px); }
+/* brand mark in white, e.g. the FinFlux F (FF-3) */
+.logo-mark { position: absolute; left: 50%; top: 50%; translate: -50% -50%; height: 44%; background: linear-gradient(160deg, #FFFFFF 30%, #C9D3FF); -webkit-mask: var(--mark) center / contain no-repeat; mask: var(--mark) center / contain no-repeat; filter: drop-shadow(0 10px 18px rgb(0 0 0 / .25)); transition: transform .6s var(--ease); }
+.slot-logo:hover .logo-mark { transform: rotate(-4deg) scale(1.04); }
+/* a type-only logo set live, e.g. TOKI TOKI in Anton on TOKITOKI orange (TT-3) */
+.slot-textlogo { container-type: inline-size; }
+.slot-textlogo b { font: 400 26.75cqw/1 "Anton", "Bebas Neue", Impact, sans-serif; letter-spacing: .18em; padding-left: .18em; text-transform: uppercase; text-align: center; transition: transform .6s var(--ease); }
+.slot-textlogo:hover b { transform: rotate(-3deg) scale(1.03); }
+@media (max-width: 560px) { .slot-textlogo b { font-size: 15cqw; } }
+/* a wordmark on a solid colour (e.g. FinFlux in white on black, FF-4) */
+.slot-word .wordmark { width: min(46%, 380px); height: auto; transition: transform .6s var(--ease); }
+.slot-word:hover .wordmark { transform: scale(1.03); }
+@media (max-width: 560px) { .slot-word .wordmark { width: 56%; } }
+.br-video { display: block; width: 100%; height: auto; aspect-ratio: 1600 / 910; background: #E1EDFC; }
+/* plain recordings: on a tile in their own background colour (TOKITOKI, 26 Oct) */
+.slot-plain .plain-video { inset: auto; left: 50%; top: 50%; translate: -50% -50%; width: auto; height: var(--vh, 86%); max-width: 92%; object-fit: contain; transition: transform .6s var(--ease); }
+.slot-plain .plain-video.is-cover { inset: 0; left: 0; top: 0; translate: none; width: 100%; height: 100%; max-width: none; object-fit: cover; }
+.slot-plain:hover .plain-video:not(.is-cover) { transform: translateY(-4px); }
+@media (max-width: 560px) { .br-bar i { width: 8px; height: 8px; } .br-bar span { transform: none; } }
+.case-hero { margin-top: clamp(40px, 5vw, 72px); }
+.case-fig { margin-top: clamp(48px, 6vw, 88px); }
+/* a small square beside a large image, like the work grid on the home page */
+.case-duo { display: grid; grid-template-columns: minmax(0, 226fr) minmax(0, 764fr); gap: clamp(12px, 1.6vw, 22px); margin-top: clamp(48px, 6vw, 88px); }
+.case-duo.flip { grid-template-columns: minmax(0, 764fr) minmax(0, 226fr); }
+/* even duo (TOKITOKI): the wide tile beside the square is exactly 16:10 */
+.case-duo.is-even { grid-template-columns: minmax(0, 10fr) minmax(0, 16fr); }
+.case-duo .slot:not(.r-square) { min-height: 100%; }
+.case-pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(12px, 1.6vw, 22px); margin-top: clamp(12px, 1.6vw, 22px); }
+
+/* ---------- Story sections: label on the left, text on the right ---------- */
+.case-sec { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2.3fr); gap: 14px clamp(24px, 4vw, 64px); margin-top: clamp(56px, 7vw, 100px); }
+.case-sec h2 { margin: 0; padding-top: .35em; font: 400 .8rem/1.4 var(--font-body); letter-spacing: .18em; text-transform: uppercase; color: var(--work-ink); }
+.case-sec h2::before { content: attr(data-n); display: block; margin-bottom: 6px; color: var(--acc); }
+.case-text > * + * { margin-top: 18px; }
+.case-text p { margin: 0; max-width: 62ch; font-size: 1.0625rem; line-height: 1.75; color: var(--ink-2); }
+.case-text .lead { font-size: clamp(1.15rem, 1rem + .5vw, 1.4rem); line-height: 1.6; color: var(--ink); }
+.case-q { margin: 26px 0 0; padding: 4px 0 4px 20px; max-width: 34ch; border-left: 2px solid var(--acc); font: 400 clamp(1.2rem, 1rem + .8vw, 1.6rem)/1.4 var(--font-body); color: var(--hero-ink); }
+.approach { list-style: none; margin: 0; padding: 0; counter-reset: ap; }
+.approach li { counter-increment: ap; display: grid; grid-template-columns: 2.6rem minmax(0, 1fr); gap: 4px 12px; padding: 18px 0; border-top: 1px solid var(--line); font-size: 1.0625rem; line-height: 1.7; color: var(--ink-2); }
+.approach li:last-child { border-bottom: 1px solid var(--line); }
+.approach li::before { content: counter(ap, decimal-leading-zero); padding-top: .3em; font: 400 .78rem/1.4 var(--font-body); letter-spacing: .12em; color: var(--acc); }
+.approach b { font-weight: 500; color: var(--hero-ink); }
+
+/* ---------- Next case study ---------- */
+/* Next case study (29 Oct, Rajla: smaller, no image, just the next project's
+   logo in its own identity + "Next case study" + "Read"): a slim card with the
+   brand tile on the left. */
+.case-next { display: flex; align-items: center; gap: clamp(16px, 2vw, 22px); width: fit-content; max-width: 100%; margin: clamp(88px, 10vw, 140px) auto 0; padding: 12px 30px 12px 12px; border-radius: 26px; background: var(--bento-ph); color: inherit; text-decoration: none; transition: transform .55s var(--ease), box-shadow .55s var(--ease); }
+.case-next:hover, .case-next:focus-visible { transform: translateY(-4px); box-shadow: 0 22px 40px -26px var(--sh-strong); }
+.cn-logo { flex: none; display: grid; place-items: center; height: 72px; border-radius: 16px; transition: transform .55s var(--ease); }
+.cn-logo.is-word { padding: 0 24px; }
+.cn-logo.is-word svg { display: block; width: 118px; height: auto; }
+.cn-logo.is-text { width: 72px; }
+.cn-logo.is-text b { font: 400 19px/1 "Anton", "Bebas Neue", Impact, sans-serif; letter-spacing: .18em; padding-left: .18em; text-transform: uppercase; text-align: center; }
+.case-next:hover .cn-logo { transform: rotate(-3deg) scale(1.04); }
+.cn-text { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.cn-label { font: 400 .72rem/1.4 var(--font-body); letter-spacing: .16em; text-transform: uppercase; color: var(--hero-sub); }
+.cn-read { display: inline-flex; align-items: center; gap: 8px; font-size: 1rem; color: var(--ink); white-space: nowrap; }
+.cn-read i { font-style: normal; color: var(--acc); transition: transform .4s var(--ease); }
+.case-next:hover .cn-read i { transform: translateX(5px); }
+.case-back { display: flex; justify-content: center; margin-top: 22px; }
+
+.case > .note { margin-top: clamp(28px, 3vw, 40px); }
+
+@media (max-width: 860px) {
+  .case-meta { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .case-sec { grid-template-columns: minmax(0, 1fr); }
+  .case-sec h2 { padding-top: 0; }
+  .case-next { padding-right: 22px; }
+  .cn-logo { height: 62px; }
+  .cn-logo.is-text { width: 62px; }
+  .cn-logo.is-text b { font-size: 16px; }
+  .cn-logo.is-word { padding: 0 18px; }
+  .cn-logo.is-word svg { width: 100px; }
+}
+@media (max-width: 560px) {
+  .case-duo, .case-duo.flip, .case-duo.is-even, .case-pair { grid-template-columns: minmax(0, 1fr); }
+  .case-duo .slot:not(.r-square) { aspect-ratio: 16 / 10; min-height: 0; }
+  .case-duo .slot.r-square { aspect-ratio: 16 / 10; }
+}
+
+/* Work in progress notice (29 Oct): TOKITOKI is still in production, so its
+   screens use sample content. Plain text under the overview (no box, Rajla's
+   comment), led by a small pulsing dot and label in the project colour. */
+.case-wip { margin: clamp(22px, 2.6vw, 32px) 0 0; max-width: 64ch; padding: 0; font-size: .92rem; line-height: 1.6; color: var(--ink-2); }
+.case-wip b { display: inline-flex; align-items: center; gap: 8px; margin-right: 6px; font: 500 .7rem/1.6 var(--font-body); letter-spacing: .16em; text-transform: uppercase; color: var(--acc); white-space: nowrap; vertical-align: 1px; }
+.case-wip i { position: relative; width: 7px; height: 7px; border-radius: 50%; background: var(--acc); }
+.case-wip i::after { content: ""; position: absolute; inset: 0; border-radius: inherit; background: var(--acc); animation: wip-ping 2.4s cubic-bezier(.2, .7, .3, 1) infinite; }
+@keyframes wip-ping { 0% { opacity: .55; scale: 1; } 70%, 100% { opacity: 0; scale: 2.8; } }
+@media (prefers-reduced-motion: reduce) { .case-wip i::after { animation: none; opacity: 0; } }
+/* paragraphs in a story section get the same gap as the rest (the challenge has two) */
+.case-text p + p { margin-top: 18px; }
+.case-meta .dim { color: var(--hero-sub); }
+
+/* The research (29 Oct): from Rajla's FigJam boards. Numbers in a ruled row,
+   quotes with a thin accent line (no boxes), sources small and linked. */
+.case-text .cr-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 24px 34px; margin-top: 30px; padding: 26px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.cr-stat b { display: block; font: 400 clamp(2.2rem, 1.7rem + 1.5vw, 3rem)/1 var(--font-body); letter-spacing: -.03em; color: var(--hero-ink); }
+.case-text .cr-stat p { margin-top: 12px; font-size: .92rem; line-height: 1.6; }
+.cr-src { display: block; margin-top: 8px; font-size: .76rem; color: var(--hero-sub); text-decoration: underline; text-decoration-color: color-mix(in srgb, currentColor 40%, transparent); text-underline-offset: 3px; transition: color .3s var(--ease); }
+.cr-src:hover { color: var(--acc); }
+.case-text .cr-label { margin-top: 36px; font: 400 .72rem/1.4 var(--font-body); letter-spacing: .16em; text-transform: uppercase; color: var(--hero-sub); }
+.case-text .cr-quotes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 26px 34px; margin-top: 16px; }
+.cr-quote { margin: 0; padding-left: 16px; border-left: 2px solid var(--acc); }
+.cr-quote figcaption { font: 500 .95rem/1.4 var(--font-body); color: var(--hero-ink); }
+.cr-quote figcaption span { margin-left: 8px; font: 400 .64rem/1 var(--font-body); letter-spacing: .14em; text-transform: uppercase; color: var(--acc); vertical-align: 1px; }
+.cr-quote blockquote { margin: 8px 0 0; }
+.case-text .cr-quote blockquote p { font-size: 1rem; line-height: 1.6; color: var(--ink-2); }
+.case-text .cr-after { margin-top: 36px; }
+.cr-srcs { display: block; margin-top: 8px; font-size: .78rem; color: var(--hero-sub); }
+.cr-srcs a { color: inherit; text-decoration: underline; text-decoration-color: color-mix(in srgb, currentColor 40%, transparent); text-underline-offset: 3px; }
+.cr-srcs a:hover { color: var(--acc); }
+@media (max-width: 560px) { .case-text .cr-quotes { grid-template-columns: minmax(0, 1fr); } }
+
+/* Where it started (29 Oct): the old home page, before Rajla's redesign, in a
+   small browser window under the challenge. It scrolls through on hover. */
+.case-text .case-before { margin: 40px 0 0; max-width: 640px; }
+.cb-frame { overflow: hidden; border-radius: 14px; background: var(--frame); box-shadow: 0 0 0 1px var(--line), 0 30px 60px -42px var(--sh-strong); }
+.cb-frame .br-bar span { transform: none; }
+.cb-view { aspect-ratio: 16 / 10; overflow: hidden; container-type: size; outline: none; }
+.cb-view img { display: block; width: 100%; height: auto; transition: transform 1.4s var(--ease); }
+.case-before figcaption { margin-top: 14px; font-size: .92rem; line-height: 1.6; color: var(--ink-2); }
+.case-before figcaption b { display: block; margin-bottom: 4px; font: 400 .72rem/1.4 var(--font-body); letter-spacing: .16em; text-transform: uppercase; color: var(--acc); }
+.cb-hint { color: var(--hero-sub); }
+.cb-hint.is-touch { display: none; }
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .case-before:hover .cb-view img, .cb-view:focus-visible img { transform: translateY(calc(-100% + 100cqh)); transition: transform 10s linear; }
+}
+@media (hover: none), (prefers-reduced-motion: reduce) {
+  .cb-view { overflow-y: auto; overscroll-behavior: contain; }
+  .cb-hint.is-hover { display: none; }
+  .cb-hint.is-touch { display: inline; }
+}
+
+</style>
+</head>
+<body>
+<div class="progress" aria-hidden="true"></div>
+<div class="follow" aria-hidden="true"><div class="follow-in"><span class="follow-label">You</span><div class="follow-card"><div class="fc-screen"><i></i><i></i><i></i><i></i></div><b></b></div></div></div>
+
+<header class="topbar glass">
+  <a class="file" href="index.html" aria-label="Rajla, back to the home page" data-cursor="Home"><span class="brand-mark"><svg class="bfly" viewBox="0 0 32 32" aria-hidden="true"><defs><radialGradient id="bfm-f" gradientUnits="userSpaceOnUse" cx="16.64" cy="15.63" r="13.55"><stop offset="0" stop-color="#02083A"></stop><stop offset="0.2" stop-color="#000F81"></stop><stop offset="0.5" stop-color="#0C5CE4"></stop><stop offset="0.8" stop-color="#2A98FF"></stop><stop offset="1" stop-color="#1E6AD8"></stop></radialGradient><radialGradient id="bfm-h" gradientUnits="userSpaceOnUse" cx="16.64" cy="16.78" r="9.91"><stop offset="0" stop-color="#02083A"></stop><stop offset="0.2" stop-color="#000F81"></stop><stop offset="0.5" stop-color="#0C5CE4"></stop><stop offset="0.8" stop-color="#2A98FF"></stop><stop offset="1" stop-color="#1E6AD8"></stop></radialGradient><linearGradient id="bfm-b" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#04060D"></stop><stop offset=".55" stop-color="#071022"></stop><stop offset="1" stop-color="#0C2552"></stop></linearGradient></defs><g class="wing"><path class="w-rim" d="M16.51 16.53C17 16.23 18.3 16.72 19.33 16.91C20.35 17.1 21.72 17.25 22.66 17.68C23.59 18.11 24.41 18.79 24.96 19.47C25.51 20.15 25.9 21.01 25.98 21.78C26.07 22.54 25.81 23.4 25.47 24.08C25.13 24.76 24.58 25.4 23.94 25.87C23.3 26.34 22.4 26.81 21.63 26.9C20.86 26.98 19.97 26.81 19.33 26.38C18.69 25.96 18.2 25.15 17.79 24.34C17.39 23.53 17.13 22.46 16.9 21.52C16.66 20.58 16.45 19.54 16.38 18.7C16.32 17.87 16.02 16.83 16.51 16.53z"></path><path fill="url(#bfm-h)" d="M16.53 16.57C16.95 16.31 18.05 16.73 18.92 16.89C19.8 17.06 20.96 17.18 21.75 17.55C22.55 17.91 23.24 18.49 23.71 19.07C24.18 19.65 24.51 20.37 24.58 21.03C24.65 21.68 24.44 22.41 24.15 22.99C23.86 23.57 23.39 24.11 22.84 24.51C22.3 24.91 21.54 25.31 20.88 25.38C20.23 25.45 19.47 25.31 18.92 24.94C18.38 24.58 17.96 23.89 17.62 23.2C17.27 22.51 17.06 21.61 16.86 20.81C16.66 20.01 16.48 19.12 16.42 18.42C16.37 17.71 16.11 16.82 16.53 16.57z"></path><circle class="sp-b" cx="24.34" cy="19.27" r="0.4"></circle><circle class="sp-b" cx="25.28" cy="21.4" r="0.4"></circle><circle class="sp-b" cx="24.81" cy="23.53" r="0.4"></circle><circle class="sp-w" cx="23.39" cy="25.19" r="0.4"></circle><circle class="sp-w" cx="21.26" cy="26.14" r="0.4"></circle><circle class="sp-w" cx="19.13" cy="25.66" r="0.4"></circle><path class="w-rim" d="M16.38 15.38C16.55 14.78 16.96 13.58 17.54 12.56C18.11 11.54 18.86 10.17 19.84 9.23C20.82 8.29 22.19 7.48 23.42 6.93C24.66 6.37 26.28 5.99 27.26 5.9C28.25 5.82 28.89 6.03 29.31 6.42C29.74 6.8 29.87 7.48 29.82 8.21C29.78 8.93 29.35 9.91 29.06 10.77C28.76 11.62 28.42 12.52 28.03 13.33C27.65 14.14 27.39 15.03 26.75 15.63C26.11 16.23 25.17 16.66 24.19 16.91C23.21 17.17 21.89 17.19 20.86 17.17C19.84 17.15 18.77 16.95 18.05 16.78C17.32 16.61 16.79 16.38 16.51 16.14C16.23 15.91 16.21 15.97 16.38 15.38z"></path><path fill="url(#bfm-f)" d="M16.42 15.41C16.57 14.89 16.92 13.86 17.42 12.97C17.91 12.09 18.56 10.91 19.41 10.1C20.26 9.28 21.44 8.58 22.51 8.1C23.58 7.62 24.98 7.29 25.83 7.22C26.68 7.14 27.23 7.33 27.6 7.66C27.97 7.99 28.08 8.58 28.04 9.21C28.01 9.84 27.64 10.69 27.38 11.42C27.12 12.16 26.83 12.94 26.49 13.64C26.16 14.34 25.94 15.12 25.39 15.63C24.83 16.15 24.02 16.52 23.17 16.74C22.32 16.96 21.18 16.98 20.29 16.96C19.41 16.94 18.49 16.78 17.86 16.63C17.23 16.48 16.77 16.28 16.53 16.07C16.29 15.87 16.27 15.93 16.42 15.41z"></path><circle class="sp-w" cx="22.98" cy="7.49" r="0.42"></circle><circle class="sp-w" cx="26.57" cy="6.54" r="0.42"></circle><circle class="sp-w" cx="28.49" cy="7.02" r="0.42"></circle><circle class="sp-w" cx="28.97" cy="8.69" r="0.42"></circle><circle class="sp-b" cx="28.25" cy="11.08" r="0.42"></circle><circle class="sp-b" cx="27.29" cy="13.48" r="0.42"></circle></g><g class="wing"><g transform="matrix(-1 0 0 1 32 0)"><path class="w-rim" d="M16.51 16.53C17 16.23 18.3 16.72 19.33 16.91C20.35 17.1 21.72 17.25 22.66 17.68C23.59 18.11 24.41 18.79 24.96 19.47C25.51 20.15 25.9 21.01 25.98 21.78C26.07 22.54 25.81 23.4 25.47 24.08C25.13 24.76 24.58 25.4 23.94 25.87C23.3 26.34 22.4 26.81 21.63 26.9C20.86 26.98 19.97 26.81 19.33 26.38C18.69 25.96 18.2 25.15 17.79 24.34C17.39 23.53 17.13 22.46 16.9 21.52C16.66 20.58 16.45 19.54 16.38 18.7C16.32 17.87 16.02 16.83 16.51 16.53z"></path><path fill="url(#bfm-h)" d="M16.53 16.57C16.95 16.31 18.05 16.73 18.92 16.89C19.8 17.06 20.96 17.18 21.75 17.55C22.55 17.91 23.24 18.49 23.71 19.07C24.18 19.65 24.51 20.37 24.58 21.03C24.65 21.68 24.44 22.41 24.15 22.99C23.86 23.57 23.39 24.11 22.84 24.51C22.3 24.91 21.54 25.31 20.88 25.38C20.23 25.45 19.47 25.31 18.92 24.94C18.38 24.58 17.96 23.89 17.62 23.2C17.27 22.51 17.06 21.61 16.86 20.81C16.66 20.01 16.48 19.12 16.42 18.42C16.37 17.71 16.11 16.82 16.53 16.57z"></path><circle class="sp-b" cx="24.34" cy="19.27" r="0.4"></circle><circle class="sp-b" cx="25.28" cy="21.4" r="0.4"></circle><circle class="sp-b" cx="24.81" cy="23.53" r="0.4"></circle><circle class="sp-w" cx="23.39" cy="25.19" r="0.4"></circle><circle class="sp-w" cx="21.26" cy="26.14" r="0.4"></circle><circle class="sp-w" cx="19.13" cy="25.66" r="0.4"></circle><path class="w-rim" d="M16.38 15.38C16.55 14.78 16.96 13.58 17.54 12.56C18.11 11.54 18.86 10.17 19.84 9.23C20.82 8.29 22.19 7.48 23.42 6.93C24.66 6.37 26.28 5.99 27.26 5.9C28.25 5.82 28.89 6.03 29.31 6.42C29.74 6.8 29.87 7.48 29.82 8.21C29.78 8.93 29.35 9.91 29.06 10.77C28.76 11.62 28.42 12.52 28.03 13.33C27.65 14.14 27.39 15.03 26.75 15.63C26.11 16.23 25.17 16.66 24.19 16.91C23.21 17.17 21.89 17.19 20.86 17.17C19.84 17.15 18.77 16.95 18.05 16.78C17.32 16.61 16.79 16.38 16.51 16.14C16.23 15.91 16.21 15.97 16.38 15.38z"></path><path fill="url(#bfm-f)" d="M16.42 15.41C16.57 14.89 16.92 13.86 17.42 12.97C17.91 12.09 18.56 10.91 19.41 10.1C20.26 9.28 21.44 8.58 22.51 8.1C23.58 7.62 24.98 7.29 25.83 7.22C26.68 7.14 27.23 7.33 27.6 7.66C27.97 7.99 28.08 8.58 28.04 9.21C28.01 9.84 27.64 10.69 27.38 11.42C27.12 12.16 26.83 12.94 26.49 13.64C26.16 14.34 25.94 15.12 25.39 15.63C24.83 16.15 24.02 16.52 23.17 16.74C22.32 16.96 21.18 16.98 20.29 16.96C19.41 16.94 18.49 16.78 17.86 16.63C17.23 16.48 16.77 16.28 16.53 16.07C16.29 15.87 16.27 15.93 16.42 15.41z"></path><circle class="sp-w" cx="22.98" cy="7.49" r="0.42"></circle><circle class="sp-w" cx="26.57" cy="6.54" r="0.42"></circle><circle class="sp-w" cx="28.49" cy="7.02" r="0.42"></circle><circle class="sp-w" cx="28.97" cy="8.69" r="0.42"></circle><circle class="sp-b" cx="28.25" cy="11.08" r="0.42"></circle><circle class="sp-b" cx="27.29" cy="13.48" r="0.42"></circle></g></g><path class="b-ant" d="M15.7 13.31C15.1 10.71 13.8 9.11 12.7 8.51M16.3 13.31C16.9 10.71 18.2 9.11 19.3 8.51"></path><circle class="b-tip" cx="12.7" cy="8.51" r=".55"></circle><circle class="b-tip" cx="19.3" cy="8.51" r=".55"></circle><ellipse fill="url(#bfm-b)" cx="16" cy="18.19" rx=".95" ry="4.1"></ellipse><circle fill="#04060D" cx="16" cy="13.91" r=".9"></circle></svg></span><span class="crumb">Portfolio / <b>Rajla</b></span></a>
+  <a class="btn btn-ink btn-small" href="index.html#work" data-cursor="All work">← All work</a>
+</header>
+
+<main class="case tone-orange" id="top" style="--acc: #DE5E33">
+  <header class="case-open">
+    <h1 class="case-title case-fade" style="--d: .05s"><span class="case-name">TOKITOKI:</span> Designing one place for every event in Albania, for the people who go and the people who organise them.</h1>
+    <p class="case-sub case-fade" style="--d: .25s">Fans find every event and book in a few taps. Organisers create their event, sell tickets, scan them at the door and track it all, in the same platform.</p>
+    <dl class="case-meta case-fade" style="--d: .4s" aria-label="Project overview"><div><dt>Role</dt><dd><span>Product Designer</span><span><span class="dim">From research to brand and UI</span></span></dd></div><div><dt>What I worked on</dt><dd><span>User Research</span><span>Competitor Analysis</span><span>Information Architecture</span><span>Fan &amp; Organiser Flows</span><span>Interactive Prototyping</span><span>UI &amp; Visual Design</span><span>Visual Identity</span></dd></div><div><dt>Team</dt><dd><span><span class="ph">Developers at Nebula LTD</span></span></dd></div><div><dt>Timeline and tools</dt><dd><span><span class="ph">&nbsp;July 2026 – Present</span></span></dd></div></dl>
+    <p class="case-wip case-fade" style="--d: .5s"><b><i aria-hidden="true"></i>Work in progress</b> TOKITOKI is still in production, so the screens on this page show the design with sample content: placeholder text, made-up events, prices and numbers.</p>
+  </header>
+
+  <aside class="note">
+    <span class="note-pin">1</span>
+    <p><span class="note-title">Case study</span>The text is an example to get you started: rewrite it in your own words and fill in the pink parts. Each grey box is an image slot, numbered TT-1 to TT-7. Send me your images with their numbers and I'll put them in.</p>
+  </aside>
+
+  <figure class="slot-browser case-hero" data-slot="TT-1" data-anim="reveal"><div class="br-bar" aria-hidden="true"><i></i><i></i><i></i><span>TOKITOKI</span></div><video class="br-video case-video" width="2048" height="1280" poster="img/tokitoki-landing-rec-poster.webp" autoplay="" muted="" loop="" playsinline="" preload="auto" aria-label="Screen recording of the TOKITOKI landing page scrolling from the orange TOKITOKI hero through the events, target audiences, hiking trails and the August calendar to &quot;Are you an organizer?&quot; and the FAQ" style="aspect-ratio: 2048 / 1280"><source src="img/tokitoki-landing-rec-1280.mp4" type="video/mp4" media="(max-width: 700px)"><source src="img/tokitoki-landing-rec-2048.mp4" type="video/mp4"><source src="img/tokitoki-landing-rec-2048.webm" type="video/webm"></video></figure>
+
+  <section class="case-sec" data-anim="reveal">
+    <h2 data-n="01">About TOKITOKI</h2>
+    <div class="case-text"><p class="lead">TOKITOKI is an event platform made for Albania. Fans find every event in one place, from concerts and festivals to culture and sport, and book in a few taps. Organisers create their event right in the platform and run it from there: ticket sales, buyers, QR tickets and the staff helping on the night.</p></div>
+  </section>
+
+  <section class="case-sec" data-anim="reveal">
+    <h2 data-n="02">The challenge</h2>
+    <div class="case-text"><p>In Albania there is no single place to find events. Organisers build a quick website for each event, or use a third-party page with no clear design or brand of its own.</p><p>So fans hunt across sites, social posts and a different checkout every time, with extra steps at each one. Organisers track sales, guests and staff in separate places. And buying tickets online is still new here: in 2025, 8.6% of people in Albania had bought event tickets online in the last three months, against 26.8% across the EU (Eurostat).</p><p class="case-q">How might we bring every event in Albania into one place, and make it easy for both the fans and the organisers?</p></div>
+  </section>
+
+  <section class="case-sec case-research" data-anim="reveal">
+    <h2 data-n="03">The research</h2>
+    <div class="case-text"><p>I spoke one to one with 7+ fans and organisers, looked at how events are sold in Albania today, and read the numbers on buying tickets online. Then I mapped two journeys, one for fans and one for organisers, to find where each step hurts.</p><div class="cr-stats"><div class="cr-stat"><b>8.6%</b><p>of people in Albania bought event tickets online in the last three months, against 26.8% across the EU. <a class="cr-src" href="https://telegrafi.com/sa-blihen-online-biletat-per-evente-ne-shqiperi-dhe-kosove/" target="_blank" rel="noopener">Eurostat 2025, via Telegrafi</a></p></div><div class="cr-stat"><b>85.6%</b><p>of Albania’s 2.78 million people are online, with 1.41 million social media profiles: where fans hear about events. <a class="cr-src" href="https://datareportal.com/reports/digital-2025-albania" target="_blank" rel="noopener">DataReportal 2025</a></p></div><div class="cr-stat"><b>26%</b><p>of US online shoppers have left a checkout because they had to create an account, and 22% because it took too long. <a class="cr-src" href="https://retailboss.co/10-reasons-for-abandonment-during-checkout-in-the-u-s" target="_blank" rel="noopener">Baymard Institute 2024, via RetailBoss</a></p></div></div><p class="cr-label">What people told me</p><div class="cr-quotes"><figure class="cr-quote"><figcaption>Events are all over the place<span>Fan</span></figcaption><blockquote><p>“There is always a new website for a new event.”</p></blockquote></figure><figure class="cr-quote"><figcaption>Too many steps to get a ticket<span>Fan</span></figcaption><blockquote><p>“For each event I attend, I have to create a new account all over again.”</p></blockquote></figure><figure class="cr-quote"><figcaption>The fees show up at the last step<span>Fan</span></figcaption><blockquote><p>“Feels like every next screen raises the price.”</p></blockquote></figure><figure class="cr-quote"><figcaption>Just show me what’s on<span>Fan</span></figcaption><blockquote><p>“I wish there was a page for everything every time I want to go somewhere.”</p></blockquote></figure><figure class="cr-quote"><figcaption>A new website for every event<span>Organiser</span></figcaption><blockquote><p>“I wish I didn’t have to contact third parties and constantly explain to strangers what event I want to create.”</p></blockquote></figure><figure class="cr-quote"><figcaption>Sales, guests and staff in different places<span>Organiser</span></figcaption><blockquote><p>“A lot of time lost trying to reach people and ask them for updates.”</p></blockquote></figure></div><p class="cr-after">Today an event might sell through the organiser’s own website, a ticketing agency like Enter Events, or a cultural platform like Almanart, which added tickets in July 2025. Each does one part well, but none brings every event, every fan and every organiser together. <span class="cr-srcs">Sources: <a href="https://www.enterevents.al/" target="_blank" rel="noopener">Enter Events</a> · <a href="https://albaniatech.org/almanart-launches-new-feature-at-product-launch-ticket-purchases-for-events-directly-from-the-platform/" target="_blank" rel="noopener">Almanart ticketing launch (Albania Tech)</a></span></p></div>
+  </section>
+
+  <figure class="slot slot-plain r-wide case-fig" data-slot="TT-2" data-anim="reveal" style="background: #EDEBEC; --vh: 90%"><video class="plain-video case-video" width="2880" height="1800" poster="img/tokitoki-calendar-hq-poster.webp" autoplay="" muted="" loop="" playsinline="" preload="auto" aria-label="Screen recording of the August event calendar: hand-drawn month title, event stickers on the dates and a moving equaliser on the 11th" style="aspect-ratio: 2880 / 1800"><source src="img/tokitoki-calendar-hq-1440.mp4" type="video/mp4" media="(max-width: 700px)"><source src="img/tokitoki-calendar-hq-2880.mp4" type="video/mp4"><source src="img/tokitoki-calendar-hq-2880.webm" type="video/webm"></video></figure>
+
+  <section class="case-sec" data-anim="reveal">
+    <h2 data-n="04">The approach</h2>
+    <div class="case-text"><ol class="approach"><li><span><b>Everything in one place.</b> Every event, every fan and every organiser on one platform. I mapped who goes to which events, so the landing page opens with what each audience goes to.</span></li><li><span><b>Fewer steps for fans.</b> A calendar of everything on this month, arenas and seats directly to see and choose from, a checkout that shows ticket, date, place and the full price together, in as few steps as possible.</span></li><li><span><b>Organisers run it themselves.</b> They create the event in TOKITOKI and track sales, buyers, QR tickets and their staff on the night from one dashboard, without building a website.</span></li><li><span><b>A playful identity.</b> Bold orange, the sticker-style TOKI TOKI wordmark and friendly illustrations, so booking feels as fun as the event.</span></li></ol></div>
+  </section>
+
+  <div class="case-duo is-even"><figure class="slot slot-textlogo r-square" data-slot="TT-3" data-anim="reveal" style="background: #DD5D31; color: #FFFFFF"><b role="img" aria-label="The TOKI TOKI logo">TOKI<br>TOKI</b></figure><figure class="slot slot-plain" data-slot="TT-4" data-anim="reveal" style="background: #EDEBEC; --vh: 88%"><video class="plain-video case-video" width="760" height="698" poster="img/tokitoki-audiences-srgb-poster.webp" autoplay="" muted="" loop="" playsinline="" preload="auto" aria-label="Screen recording of the &quot;Our Target Audiences&quot; cards: clicking the arrow moves from Festival Lovers to Sport Fanatics" style="aspect-ratio: 760 / 698"><source src="img/tokitoki-audiences-srgb.mp4" type="video/mp4"><source src="img/tokitoki-audiences-srgb.webm" type="video/webm"></video></figure></div>
+
+  <figure class="slot-browser case-fig" data-slot="TT-5" data-anim="reveal"><div class="br-bar" aria-hidden="true"><i></i><i></i><i></i><span>TOKITOKI · Post Malone with Jelly Roll</span></div><video class="br-video case-video" width="1600" height="1000" poster="img/tokitoki-event-srgb-poster.webp" autoplay="" muted="" loop="" playsinline="" preload="auto" aria-label="Screen recording of a TOKITOKI event page for Post Malone with Jelly Roll, scrolling from the ticket box and event details to the line-up, related tags and more events" style="aspect-ratio: 1600 / 1000"><source src="img/tokitoki-event-srgb-960.mp4" type="video/mp4" media="(max-width: 700px)"><source src="img/tokitoki-event-srgb-1600.mp4" type="video/mp4"><source src="img/tokitoki-event-srgb-1600.webm" type="video/webm"></video></figure>
+  <figure class="slot-browser case-fig" data-slot="TT-8" data-anim="reveal"><div class="br-bar" aria-hidden="true"><i></i><i></i><i></i><span>TOKITOKI · Checkout</span></div><img class="br-video" src="img/tokitoki-checkout-v2-2000.webp" srcset="img/tokitoki-checkout-v2-1000.webp 1000w, img/tokitoki-checkout-v2-2000.webp 2000w" sizes="(max-width: 1060px) 96vw, 1012px" width="2000" height="1250" alt="The TOKITOKI ticket checkout: ticket types with their prices (Early Entry GA, VIP 1, VIP 2 selected with a quantity stepper, Backstage Pass), an order summary with a promo code field, tax, delivery fee and a 73,50 € total, and a Confirm Quantity button" style="aspect-ratio: 2000 / 1250"></figure>
+  <figure class="slot-browser case-fig" data-slot="TT-9" data-anim="reveal"><div class="br-bar" aria-hidden="true"><i></i><i></i><i></i><span>TOKITOKI · Your tickets</span></div><img class="br-video" src="img/tokitoki-tickets-2000.webp" srcset="img/tokitoki-tickets-1000.webp 1000w, img/tokitoki-tickets-2000.webp 2000w" sizes="(max-width: 1060px) 96vw, 1012px" width="2000" height="1250" alt="The TOKITOKI booking confirmation: &quot;Congrats you're in!&quot;, ticket details, the order number and ticket insurance, next to two mobile tickets with QR codes and Add to Apple Wallet and Google Wallet buttons" style="aspect-ratio: 2000 / 1250"></figure>
+  <figure class="slot-browser case-fig" data-slot="TT-10" data-anim="reveal"><div class="br-bar" aria-hidden="true"><i></i><i></i><i></i><span>TOKITOKI · Organiser · Bookings</span></div><img class="br-video" src="img/tokitoki-bookings-2000.webp" srcset="img/tokitoki-bookings-1000.webp 1000w, img/tokitoki-bookings-2000.webp 2000w" sizes="(max-width: 1060px) 96vw, 1012px" width="2000" height="1250" alt="The TOKITOKI organiser dashboard: totals for bookings, tickets sold and earnings in lek, a weekly chart, bookings by category, and a table of every booking with filters for confirmed, pending, checked in, cancelled and refunded" style="aspect-ratio: 2000 / 1250"></figure>
+  
+
+  <section class="case-sec" data-anim="reveal">
+    <h2 data-n="05">The result</h2>
+    <div class="case-text"><p>I have designed both sides of TOKITOKI. For fans: the landing page, the event calendar, event pages, a short checkout with the full price up front, and every booking and QR ticket in one place. For organisers: the dashboard where they create their event and follow sales, buyers, check-ins and the staff working on the night. All data in one place.</p><p>TOKITOKI is still in production, but we are very excited for releasing this great product very soon for everyone!</p></div>
+  </section>
+
+  <a class="case-next" href="finflux.html" data-cursor="Next case study" data-anim="reveal" aria-label="Next case study: FinFlux">
+    <span class="cn-logo is-word" style="background: #080F2D"><svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 216 48"><path fill="#fff" fill-rule="evenodd" d="M156.40 47.63 C151.98 47.13 149.77 45.60 148.63 42.26 L148.15 40.85 L148.12 28.00 C148.09 13.62 148.04 14.65 148.80 14.28 C149.27 14.04 153.00 14.01 153.55 14.24 C154.30 14.56 154.24 13.60 154.30 26.35 C154.36 38.89 154.33 38.19 154.97 39.88 C155.32 40.82 156.59 41.68 157.94 41.91 C158.99 42.09 161.39 41.98 162.15 41.72 C162.48 41.60 163.28 41.33 163.93 41.11 C165.55 40.56 168.70 38.82 169.52 38.03 C170.12 37.45 170.10 37.80 170.10 25.98 C170.10 13.87 170.05 14.65 170.80 14.27 C171.31 14.01 175.61 14.05 176.03 14.33 C176.70 14.77 176.65 13.40 176.65 30.25 C176.65 45.25 176.65 45.46 176.45 45.84 C176.10 46.52 175.71 46.65 173.95 46.65 C171.69 46.64 171.28 46.34 171.11 44.47 C170.94 42.70 170.55 42.43 169.33 43.27 C167.60 44.46 165.39 45.64 163.48 46.41 C161.84 47.08 157.73 47.78 156.40 47.63 Z M135.75 47.33 C134.80 47.27 133.15 46.98 132.67 46.80 C130.66 46.04 129.04 44.21 128.23 41.80 C128.00 41.09 127.89 1.76 128.12 1.04 C128.38 0.27 128.62 0.20 131.04 0.21 C133.41 0.21 133.72 0.27 134.07 0.79 C134.30 1.13 134.30 1.13 134.30 18.99 C134.31 37.64 134.32 38.34 134.74 39.25 C135.49 40.89 136.50 41.38 139.36 41.49 C141.69 41.58 141.77 41.64 142.11 43.65 C142.48 45.83 142.11 46.63 140.60 46.89 C139.18 47.15 136.52 47.39 135.75 47.33 Z M0.71 46.68 C0.58 46.61 0.37 46.42 0.26 46.27 C-0.04 45.86 -0.07 8.21 0.23 6.85 C0.87 3.97 3.32 1.56 6.26 0.94 C7.44 0.69 7.44 0.69 14.30 0.70 C18.07 0.70 22.43 0.75 24.00 0.80 C28.52 0.96 28.50 0.94 28.30 3.34 C28.15 5.26 28.13 5.34 27.86 5.63 C27.43 6.09 27.32 6.10 18.63 6.10 C9.99 6.10 9.81 6.11 8.85 6.56 C7.76 7.07 7.12 7.85 6.86 9.01 C6.61 10.08 6.62 19.30 6.87 19.72 C7.33 20.51 6.56 20.44 16.24 20.50 C25.75 20.56 25.14 20.51 25.57 21.17 C25.84 21.57 25.84 24.73 25.57 25.13 C25.14 25.79 25.75 25.74 16.25 25.80 C8.27 25.85 7.63 25.86 7.33 26.03 C6.65 26.39 6.69 25.87 6.70 35.66 C6.71 46.39 6.73 46.15 5.85 46.60 C5.44 46.80 1.08 46.87 0.71 46.68 Z M93.16 46.70 C92.76 46.57 92.42 46.23 92.30 45.81 C92.12 45.17 92.17 8.50 92.35 7.66 C93.17 3.79 95.15 1.69 98.65 0.94 C100.52 0.55 118.16 0.62 119.69 1.03 C120.69 1.30 120.81 1.62 120.63 3.49 C120.47 5.20 120.44 5.33 120.12 5.62 C119.62 6.09 119.54 6.10 110.74 6.10 C102.73 6.10 102.40 6.11 101.78 6.30 C100.41 6.72 99.50 7.58 99.12 8.80 C98.88 9.58 98.86 19.27 99.10 19.74 C99.49 20.50 98.79 20.44 108.38 20.50 C117.92 20.56 117.34 20.51 117.71 21.27 C118.01 21.90 117.97 24.73 117.64 25.17 C117.16 25.83 117.63 25.80 108.43 25.80 C100.98 25.80 100.06 25.82 99.70 25.96 C98.90 26.28 98.96 25.56 98.90 36.32 C98.84 47.09 98.91 46.21 98.09 46.62 C97.71 46.82 93.76 46.88 93.16 46.70 Z M36.96 46.60 C36.55 46.47 36.22 46.12 36.10 45.71 C35.93 45.10 35.97 15.27 36.14 14.87 C36.44 14.16 36.47 14.15 38.95 14.12 C41.46 14.09 41.74 14.14 42.10 14.72 C42.30 15.05 42.30 15.18 42.30 30.30 C42.30 47.35 42.36 46.01 41.60 46.45 C41.21 46.67 37.57 46.79 36.96 46.60 Z M53.88 46.61 C53.37 46.50 53.01 46.24 52.84 45.85 C52.58 45.21 52.64 15.16 52.90 14.72 C53.23 14.19 53.58 14.10 55.41 14.10 C57.82 14.10 57.90 14.17 58.10 16.35 C58.31 18.82 58.77 19.07 60.71 17.77 C64.87 15.00 67.77 13.83 71.58 13.40 C73.49 13.19 76.72 13.67 78.02 14.37 C78.93 14.86 80.50 16.51 80.95 17.44 C81.90 19.47 81.85 18.58 81.85 32.95 C81.85 47.14 81.90 46.03 81.23 46.47 C80.80 46.76 76.72 46.74 76.15 46.45 C75.29 46.02 75.36 47.01 75.30 33.75 C75.24 21.21 75.26 21.58 74.76 20.61 C74.53 20.18 73.74 19.51 73.12 19.22 C72.11 18.75 68.97 18.80 67.58 19.30 C65.46 20.06 65.16 20.20 61.40 22.25 C59.66 23.20 59.43 23.35 59.23 23.72 C59.06 24.03 59.05 24.75 59.00 34.90 C58.94 46.90 59.00 46.04 58.33 46.47 C58.04 46.67 54.66 46.77 53.88 46.61 Z M184.70 46.61 C183.56 46.44 183.43 45.82 184.28 44.58 C184.44 44.34 184.88 43.63 185.25 43.00 C185.62 42.37 186.13 41.56 186.38 41.20 C187.02 40.28 188.53 37.92 189.20 36.80 C189.51 36.28 190.41 34.88 191.19 33.70 C193.73 29.90 193.72 29.98 191.85 27.14 C191.32 26.34 190.43 24.95 189.88 24.06 C189.33 23.18 188.54 21.96 188.14 21.35 C187.74 20.74 187.00 19.57 186.49 18.75 C185.99 17.93 185.32 16.87 185.02 16.41 C184.25 15.23 184.12 14.88 184.34 14.55 C184.62 14.12 184.88 14.09 187.56 14.12 C190.71 14.16 190.69 14.15 191.98 16.45 C192.25 16.95 192.89 18.00 193.40 18.80 C194.58 20.64 195.53 22.17 196.00 23.00 C197.00 24.75 198.14 26.52 198.45 26.79 C199.53 27.73 200.45 27.11 201.99 24.40 C202.32 23.82 202.94 22.80 203.37 22.13 C203.80 21.45 204.55 20.24 205.04 19.43 C206.33 17.28 206.41 17.15 207.10 16.05 C207.83 14.89 208.23 14.43 208.67 14.24 C209.14 14.04 213.56 14.04 214.05 14.24 C214.68 14.51 214.65 15.02 213.94 16.07 C213.51 16.70 212.64 18.07 210.72 21.15 C210.31 21.80 209.74 22.68 209.45 23.10 C209.16 23.51 208.63 24.36 208.26 24.98 C207.90 25.60 207.20 26.70 206.71 27.43 C204.96 30.03 204.92 29.73 207.73 33.97 C208.75 35.50 209.99 37.42 210.50 38.25 C211.01 39.08 212.21 40.94 213.17 42.38 C215.01 45.16 215.13 45.39 215.08 45.91 C215.01 46.60 214.80 46.65 212.12 46.65 C208.98 46.65 209.07 46.70 207.50 44.15 C207.09 43.49 206.23 42.12 205.59 41.10 C204.95 40.08 203.98 38.53 203.43 37.65 C200.32 32.67 200.32 32.67 199.86 32.43 C199.12 32.05 198.68 32.42 197.39 34.48 C196.88 35.29 196.03 36.65 195.50 37.50 C194.97 38.35 193.84 40.15 193.00 41.50 C192.16 42.85 191.26 44.29 191.01 44.70 C190.39 45.71 189.66 46.45 189.15 46.59 C188.72 46.71 185.46 46.72 184.70 46.61 Z M37.19 7.85 C36.08 7.50 35.80 6.74 35.80 4.05 C35.80 0.62 36.17 0.20 39.17 0.20 C40.86 0.20 41.35 0.30 41.89 0.76 C42.63 1.40 42.75 1.79 42.78 3.88 C42.83 6.35 42.60 7.11 41.63 7.72 C41.14 8.02 38.01 8.11 37.19 7.85 Z"></path></svg></span>
+    <span class="cn-text"><span class="cn-label">Next case study</span><span class="cn-read">Read the case study <i aria-hidden="true">→</i></span></span>
+  </a>
+  <p class="case-back"><a class="btn btn-ghost btn-small" href="index.html#work">← Back to all work</a></p>
+</main>
+
+<footer class="footer">
+  <span>Designed and built by Rajla · 2026</span>
+  <button class="foot-btn" type="button" data-notes-toggle="" aria-pressed="true" data-cursor="Template notes"><i aria-hidden="true"></i><span data-notes-label="">Hide template notes</span></button>
+  <a href="index.html">Back to the home page</a>
+</footer>
+
+<div class="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* =====================================================================
+   SHARED MOTION + UI (used by every page; inlined by src/build.py)
+   ---------------------------------------------------------------------
+   Put data-anim="name" on any element. Combine names with spaces.
+     reveal    fades up a few pixels when scrolled into view
+     stagger   its children fade up one after another
+     count     counts its number up from 0 (data-count="38")
+     bars      bar chart fills (bars need --w set, e.g. style="--w:54%")
+     grow      its children grow up from the bottom (column charts)
+     parallax  drifts slightly while scrolling (data-speed="0.2")
+   Springs (window.Spring) give hover and drag effects their bounce.
+   Everything is skipped when the visitor turns on "reduce motion".
+   ===================================================================== */
+(function () {
+  var root = document.documentElement;
+  var body = document.body;
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var fine = matchMedia('(hover: hover) and (pointer: fine)').matches;
+  window.__motionReady = true;
+
+  /* ---------- Spring physics ---------- */
+  var active = new Set(), last = 0, raf = 0;
+  function Spring(x, o) {
+    o = o || {};
+    this.x = x; this.v = 0; this.t = x;
+    this.k = o.stiffness || 260; this.c = o.damping || 24; this.m = o.mass || 1;
+    this.cb = o.onUpdate;
+  }
+  Spring.prototype.to = function (t) {
+    this.t = t;
+    if (reduce) { this.jump(t); return; }
+    active.add(this);
+    if (!raf) { last = performance.now(); raf = requestAnimationFrame(step); }
+  };
+  Spring.prototype.jump = function (t) {
+    this.x = this.t = t; this.v = 0; active.delete(this);
+    if (this.cb) this.cb(t);
+  };
+  function step(now) {
+    var dt = Math.min(0.032, (now - last) / 1000), h = dt / 3;
+    last = now;
+    active.forEach(function (s) {
+      for (var i = 0; i < 3; i++) {
+        var f = -s.k * (s.x - s.t) - s.c * s.v;
+        s.v += (f / s.m) * h; s.x += s.v * h;
+      }
+      if (Math.abs(s.v) < 0.01 && Math.abs(s.x - s.t) < 0.01) { s.x = s.t; s.v = 0; active.delete(s); }
+      if (s.cb) s.cb(s.x);
+    });
+    raf = active.size ? requestAnimationFrame(step) : 0;
+  }
+  window.Spring = Spring;
+
+  /* ---------- Toast ---------- */
+  var toastEl = document.querySelector('.toast'), toastTimer;
+  function toast(msg) {
+    if (!toastEl) return;
+    toastEl.textContent = msg;
+    toastEl.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { toastEl.classList.remove('show'); }, 2800);
+  }
+  window.toast = toast;
+
+  /* ---------- Copy email ---------- */
+  document.querySelectorAll('[data-copy]').forEach(function (btn) {
+    btn.addEventListener('click', function (e) {
+      e.preventDefault();
+      var text = btn.getAttribute('data-copy');
+      function fallback() {
+        var el = document.querySelector('.reach-mail, .email-text');
+        if (el) {
+          var r = document.createRange(); r.selectNodeContents(el);
+          var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+          toast('Email selected. Press Ctrl+C or ⌘C to copy.');
+        } else { toast('Email: ' + text); }
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(function () { toast('Email copied: ' + text); }, fallback);
+      } else { fallback(); }
+    });
+  });
+
+  /* ---------- Links that still need a real URL ---------- */
+  document.querySelectorAll('[data-todo]').forEach(function (a) {
+    a.addEventListener('click', function (e) { e.preventDefault(); toast(a.getAttribute('data-todo')); });
+  });
+
+  /* ---------- Template notes on/off (the pink comment pins) ---------- */
+  var notesBtns = document.querySelectorAll('[data-notes-toggle]');
+  function setNotes(on) {
+    body.classList.toggle('notes-off', !on);
+    notesBtns.forEach(function (b) {
+      b.setAttribute('aria-pressed', String(on));
+      var lab = b.querySelector('[data-notes-label]');
+      if (lab) lab.textContent = on ? 'Hide template notes' : 'Show template notes';
+    });
+    try { localStorage.setItem('rajla-notes', on ? '1' : '0'); } catch (e) {}
+    document.dispatchEvent(new CustomEvent('layoutchange'));
+  }
+  /* off for visitors; Rajla can switch them on while editing */
+  var notesOn = false;
+  try { notesOn = localStorage.getItem('rajla-notes') === '1'; } catch (e) {}
+  setNotes(notesOn);
+  notesBtns.forEach(function (b) {
+    b.addEventListener('click', function () {
+      var on = body.classList.contains('notes-off');
+      setNotes(on);
+      toast(on ? 'Template notes shown' : 'Template notes hidden. This is how visitors will see the page.');
+    });
+  });
+
+  /* ---------- Scroll-triggered animations ---------- */
+  function has(el, name) { return (' ' + el.getAttribute('data-anim') + ' ').indexOf(' ' + name + ' ') > -1; }
+  function countUp(el) {
+    var raw = el.getAttribute('data-count'), end = parseFloat(raw);
+    var dec = (raw.split('.')[1] || '').length;
+    if (reduce) { el.textContent = end.toFixed(dec); return; }
+    var t0 = performance.now(), dur = 1400;
+    (function tick(now) {
+      var p = Math.min(1, (now - t0) / dur), e = 1 - Math.pow(1 - p, 5);
+      el.textContent = (end * e).toFixed(dec);
+      if (p < 1) requestAnimationFrame(tick);
+    })(t0);
+  }
+  function reveal(el) {
+    el.classList.add('in');
+    if (has(el, 'count')) countUp(el);
+  }
+  window.replay = function (el) {
+    el.classList.remove('in'); void el.offsetWidth; el.classList.add('in');
+  };
+  var io = 'IntersectionObserver' in window ? new IntersectionObserver(function (entries) {
+    entries.forEach(function (en) { if (en.isIntersecting) { reveal(en.target); io.unobserve(en.target); } });
+  }, { rootMargin: '0px 0px -6% 0px', threshold: 0.01 }) : null;
+
+  document.querySelectorAll('[data-anim]').forEach(function (el) {
+    if (has(el, 'stagger') || has(el, 'grow') || has(el, 'bars')) {
+      Array.prototype.forEach.call(el.children, function (c, i) { c.style.setProperty('--si', i); });
+    }
+    if (!/reveal|stagger|count|bars|grow/.test(el.getAttribute('data-anim'))) return;
+    if (!io || reduce) { el.classList.add('in'); return; }
+    io.observe(el);
+  });
+
+  /* ---------- Parallax ---------- */
+  var px = Array.prototype.slice.call(document.querySelectorAll('[data-anim~="parallax"]'));
+  if (px.length && !reduce) {
+    var ticking = false;
+    var runPx = function () {
+      ticking = false;
+      var vh = innerHeight;
+      px.forEach(function (el) {
+        var r = el.parentElement.getBoundingClientRect();
+        if (r.bottom < -100 || r.top > vh + 100) return;
+        var p = (r.top + r.height / 2 - vh / 2) / vh;
+        var sp = parseFloat(el.getAttribute('data-speed') || '0.15');
+        el.style.transform = 'translate3d(0,' + (p * sp * 90).toFixed(1) + 'px,0)';
+      });
+    };
+    addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(runPx); } }, { passive: true });
+    runPx();
+  }
+
+  /* ---------- Liquid glass sheen follows the pointer ---------- */
+  document.querySelectorAll('.glass').forEach(function (g) {
+    g.addEventListener('pointermove', function (e) {
+      g.style.setProperty('--mx', (e.clientX - g.getBoundingClientRect().left) + 'px');
+    });
+    g.addEventListener('pointerleave', function () { g.style.removeProperty('--mx'); });
+  });
+
+  /* ---------- Your cursor's tag ----------
+     A tag rides along with the mouse and says what you're pointing at.
+     It reads data-cursor="…" first, then a link's or button's own text.
+     Elements with data-preview show a project card instead. */
+  var follow = document.querySelector('.follow');
+  if (follow && fine) {
+    body.classList.add('has-follow');
+    var label = follow.querySelector('.follow-label');
+    var card = follow.querySelector('.follow-card');
+    var DEFAULT = follow.getAttribute('data-default') || 'You';
+    var inited = false, current = label.textContent;
+    var place = function () { follow.style.transform = 'translate3d(' + fx.x.toFixed(1) + 'px,' + fy.x.toFixed(1) + 'px,0)'; };
+    var fx = new Spring(0, { stiffness: 900, damping: 55, onUpdate: place });
+    var fy = new Spring(0, { stiffness: 900, damping: 55, onUpdate: place });
+    addEventListener('pointermove', function (e) {
+      if (e.pointerType === 'touch') return;
+      if (!inited) { inited = true; fx.jump(e.clientX); fy.jump(e.clientY); follow.classList.add('on'); return; }
+      follow.classList.add('on');
+      fx.to(e.clientX); fy.to(e.clientY);
+    }, { passive: true });
+    document.addEventListener('mouseout', function (e) { if (!e.relatedTarget) follow.classList.remove('on'); });
+
+    var resolve = function (t) {
+      var el = t && t.closest ? t.closest('[data-cursor], [data-preview], a, button, input, select, textarea, label') : null;
+      if (!el) return { text: DEFAULT };
+      if (el.hasAttribute('data-preview')) return { preview: el };
+      var txt = el.getAttribute('data-cursor') || el.getAttribute('aria-label') || el.textContent || '';
+      txt = txt.replace(/\s+/g, ' ').trim();
+      if (txt.length > 26) txt = txt.slice(0, 24).trim() + '…';
+      return { text: txt || DEFAULT };
+    };
+    document.addEventListener('pointerover', function (e) {
+      if (e.pointerType === 'touch') return;
+      var r = resolve(e.target);
+      follow.classList.toggle('no-tag', !!r.hide);
+      if (r.hide) return;
+      if (r.preview) {
+        follow.dataset.mode = 'preview';
+        card.style.setProperty('--pc', 'var(--' + r.preview.getAttribute('data-preview') + ')');
+        card.querySelector('b').textContent = r.preview.getAttribute('data-preview-title') || '';
+        current = null;
+        return;
+      }
+      follow.dataset.mode = 'label';
+      if (r.text !== current) {
+        current = r.text;
+        label.textContent = r.text;
+        label.classList.remove('swap'); void label.offsetWidth; label.classList.add('swap');
+      }
+    });
+  }
+})();
+
+/* =====================================================================
+   EDIT TEXT ON THE PAGE (temporary, until the final text is baked in)
+   For the owner and editors only: an "Edit text" button turns headings,
+   paragraphs and labels into text you can type into. Each change saves to
+   the artifact's db (collection "edits", one document per changed block:
+   page, key, html, orig) and is shown to everyone on load. When the text
+   is final, Claude writes the edits into the source and removes this.
+   Blocks are found automatically; a block's key is a hash of its original
+   text, so it survives layout changes. Add data-noedit to keep something
+   locked, data-edit to make a span editable. Without the claude.ai
+   runtime (a saved copy, a local preview) nothing here shows.
+   ===================================================================== */
+(function () {
+  var meta = document.querySelector('meta[name="page-id"]');
+  if (!meta) return;
+  var PAGE = meta.content;
+  var SEL = 'h1,h2,h3,h4,p,li,dt,dd,figcaption,blockquote,[data-edit]';
+  var SKIP = '.topbar,.note,.toast,.follow,dialog,.ed-bar,.sr-only,[data-noedit],script,style,noscript,svg,button';
+  var INLINE = { SPAN: 1, B: 1, STRONG: 1, EM: 1, I: 1, BR: 1, A: 1, SMALL: 1 };
+  var blocks = [], byKey = {}, seen = {};
+
+  function norm(s) { return s.replace(/\s+/g, ' ').trim(); }
+  function hash(s) { var h = 2166136261; for (var i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return (h >>> 0).toString(36); }
+  /* only text, <br> and plain inline tags (no inline styles, no nested blocks) */
+  function simple(el) {
+    var all = el.getElementsByTagName('*');
+    for (var i = 0; i < all.length; i++) {
+      var c = all[i];
+      if (!INLINE[c.tagName] || c.hasAttribute('style') || c.matches(SEL)) return false;
+    }
+    return true;
+  }
+  /* keep text and a few inline tags; drop everything else (scripts, styles, attributes) */
+  function clean(html) {
+    var t = document.createElement('template');
+    t.innerHTML = html;
+    (function walk(node) {
+      Array.prototype.slice.call(node.childNodes).forEach(function (c) {
+        if (c.nodeType === 3) return;
+        if (c.nodeType !== 1) { node.removeChild(c); return; }
+        if (!INLINE[c.tagName]) {
+          walk(c);
+          if ((c.tagName === 'DIV' || c.tagName === 'P') && c.previousSibling) node.insertBefore(document.createElement('br'), c);
+          while (c.firstChild) node.insertBefore(c.firstChild, c);
+          node.removeChild(c);
+          return;
+        }
+        Array.prototype.slice.call(c.attributes).forEach(function (a) {
+          var ok = a.name === 'class' || a.name === 'aria-hidden' ||
+            (c.tagName === 'A' && a.name === 'href' && /^(https?:|mailto:|#|[\w.\/-]+(#[\w-]*)?$)/i.test(a.value));
+          if (!ok) c.removeAttribute(a.name);
+        });
+        walk(c);
+      });
+    })(t.content);
+    var d = document.createElement('div');
+    d.appendChild(t.content);
+    return norm(d.innerHTML);
+  }
+
+  document.querySelectorAll(SEL).forEach(function (el) {
+    if (el.closest(SKIP) || el.hasAttribute('data-count') || !norm(el.textContent) || !simple(el)) return;
+    var orig = norm(el.innerHTML), base = hash(orig);
+    seen[base] = (seen[base] || 0) + 1;
+    var key = base + (seen[base] > 1 ? '-' + seen[base] : '');
+    var b = { el: el, key: key, orig: orig, plain: clean(orig), saved: null, edited: false };
+    b.saved = b.plain;
+    el.setAttribute('data-ek', key);
+    blocks.push(b); byKey[key] = b;
+  });
+  if (!blocks.length || !window.claude || typeof window.claude.use !== 'function') return;
+
+  var col = null, editing = false, current = null, bar, toggle, statusEl, resetBtn, timers = {}, chains = {};
+  function blockOf(t) { var el = t && t.closest && t.closest('[data-ek]'); return el ? byKey[el.getAttribute('data-ek')] : null; }
+  function status(s) { if (statusEl) statusEl.textContent = s; }
+
+  window.claude.use('db').then(function (db) {
+    if (!db) return null;
+    col = db.collection('edits');
+    return col.where('page', '==', PAGE).get().then(function (snap) {
+      snap.docs.forEach(function (doc) {
+        var v = doc.data(), b = v && byKey[v.key];
+        if (!b || typeof v.html !== 'string') return;
+        b.el.innerHTML = clean(v.html);
+        b.saved = clean(v.html); b.edited = b.saved !== b.plain;
+      });
+    }, function () {}).then(function () { return window.claude.use('user'); })
+      .then(function (u) { return u ? u.canEdit() : false; })
+      .then(function (can) { if (can) buildBar(); });
+  }).catch(function () {});
+
+  function buildBar() {
+    bar = document.createElement('div');
+    bar.className = 'ed-bar glass';
+    bar.setAttribute('role', 'region');
+    bar.setAttribute('aria-label', 'Edit the text on this page');
+    bar.innerHTML = '<button type="button" class="ed-toggle" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16v4z"/><path d="M13.5 6.5l4 4"/></svg><span>Edit text</span></button>' +
+      '<span class="ed-status" aria-live="polite"></span><button type="button" class="ed-reset" hidden>Back to original</button>';
+    document.body.appendChild(bar);
+    toggle = bar.querySelector('.ed-toggle'); statusEl = bar.querySelector('.ed-status'); resetBtn = bar.querySelector('.ed-reset');
+    toggle.addEventListener('click', function () { setEditing(!editing); });
+    resetBtn.addEventListener('mousedown', function (e) { e.preventDefault(); });
+    resetBtn.addEventListener('click', function () {
+      if (!current) return;
+      current.el.innerHTML = current.orig;
+      save(current);
+    });
+  }
+
+  function setEditing(on) {
+    editing = on;
+    document.documentElement.classList.toggle('is-editing', on);
+    toggle.setAttribute('aria-pressed', String(on));
+    toggle.querySelector('span').textContent = on ? 'Done' : 'Edit text';
+    blocks.forEach(function (b) {
+      if (on) { b.el.setAttribute('contenteditable', 'true'); b.el.setAttribute('spellcheck', 'true'); }
+      else { b.el.removeAttribute('contenteditable'); b.el.removeAttribute('spellcheck'); }
+    });
+    if (!on) { blocks.forEach(function (b) { if (timers[b.key]) save(b); }); current = null; resetBtn.hidden = true; }
+    status(on ? 'Click any text to change it. Changes save as you type.' : '');
+  }
+
+  function schedule(b) {
+    clearTimeout(timers[b.key]);
+    timers[b.key] = setTimeout(function () { save(b); }, 900);
+  }
+  function save(b) {
+    clearTimeout(timers[b.key]); timers[b.key] = 0;
+    var html = clean(b.el.innerHTML);
+    if (html === b.saved) return;
+    var back = html === b.plain, ref = col.doc(PAGE + '--' + b.key);
+    b.saved = html; b.edited = !back;
+    if (current === b) resetBtn.hidden = !b.edited;
+    status('Saving…');
+    chains[b.key] = (chains[b.key] || Promise.resolve()).then(function () {
+      return back ? ref.delete() : ref.set({ page: PAGE, key: b.key, html: html, orig: b.orig, at: Date.now() });
+    }).then(function () { status('Saved'); }, function (err) {
+      b.saved = null;
+      status(err && err.code === 'quota_exceeded' ? 'Storage is full, so this change wasn’t saved' : 'Couldn’t save that change. Try typing again.');
+    });
+  }
+
+  document.addEventListener('focusin', function (e) {
+    if (!editing) return;
+    var b = blockOf(e.target);
+    if (!b) return;
+    current = b; resetBtn.hidden = !b.edited;
+  });
+  document.addEventListener('focusout', function (e) { var b = blockOf(e.target); if (b && editing) save(b); });
+  document.addEventListener('input', function (e) { var b = editing && blockOf(e.target); if (b) { status('Typing…'); schedule(b); } });
+  document.addEventListener('keydown', function (e) {
+    if (!editing || !blockOf(e.target)) return;
+    if (e.key === 'Enter') { e.preventDefault(); document.execCommand('insertLineBreak'); }
+    else if (e.key === 'Escape') { e.target.blur(); }
+  });
+  document.addEventListener('paste', function (e) {
+    if (!editing || !blockOf(e.target)) return;
+    e.preventDefault();
+    document.execCommand('insertText', false, (e.clipboardData || window.clipboardData).getData('text/plain'));
+  });
+  /* while editing, a link that holds editable text doesn't navigate, so its text can be edited */
+  document.addEventListener('click', function (e) {
+    var a = editing && e.target.closest && e.target.closest('a');
+    if (a && (blockOf(e.target) || a.querySelector('[data-ek]'))) e.preventDefault();
+  }, true);
+})();
+
+</script>
+<script>
+(function () {
+  /* Reading progress bar, in the project's colour */
+  var bar = document.querySelector('.progress'), ticking = false;
+  function progress() {
+    ticking = false;
+    var max = document.documentElement.scrollHeight - innerHeight;
+    bar.style.transform = 'scaleX(' + (max > 0 ? Math.min(1, scrollY / max) : 0) + ')';
+  }
+  addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(progress); } }, { passive: true });
+  progress();
+
+  /* Screen recordings: play only while on screen; with reduced motion, stay
+     still and show the controls so the visitor can play it themselves */
+  var vids = document.querySelectorAll('.case-video');
+  var still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  vids.forEach(function (v) {
+    if (still) { v.removeAttribute('autoplay'); v.pause(); v.controls = true; return; }
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (en) {
+        if (en[0].isIntersecting) { var p = v.play(); if (p && p.catch) p.catch(function () { v.controls = true; }); } else v.pause();
+      }, { threshold: .15 }).observe(v);
+    }
+  });
+})();
+</script>
+
+
+</body></html>
