@@ -1,9 +1,20 @@
 <!doctype html>
 <html><head>
-<meta charset="utf-8"><title>Rajla Design Portfolio</title>
+<meta charset="utf-8"><title>Rajla Zekaj · Product Designer</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="page-id" content="home">
-<meta name="description" content="Rajla, UI/UX and product designer. Selected case studies, how I work, side projects, and how to reach me.">
+<meta name="description" content="Rajla Zekaj, product designer in Tirana. I design web and mobile products that save people’s time and earn their trust. Case studies, process and CV.">
+<link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rajla Zekaj">
+<meta property="og:title" content="Rajla Zekaj · Product Designer">
+<meta property="og:description" content="I design web and mobile products that save people’s time and earn their trust.">
+<meta property="og:url" content="https://zekajrajla.github.io/">
+<meta property="og:image" content="https://zekajrajla.github.io/img/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&amp;family=Geist:wght@400..700&amp;family=Geist+Mono:wght@400;500;600&amp;family=Corinthia:wght@400;700&amp;family=Anton&amp;display=swap">
@@ -79,6 +90,19 @@
   --radius: 20px;
   --max: 1180px;
 }
+
+/* Option B (3 Nov, Rajla): Work · Contact (· CV) as plain links; at the top of
+   the page the bar is flat (just text), and turns into the glass pill once you scroll */
+.topnav { margin-left: auto; display: flex; align-items: center; gap: clamp(18px, 2.6vw, 34px); padding: 0 clamp(10px, 1.4vw, 18px) 0 8px; }
+.topnav a { position: relative; padding: 9px 0; font: 400 .95rem/1 var(--font-body); letter-spacing: .01em; color: var(--ink-2); text-decoration: none; transition: color .25s var(--ease); }
+.topnav a::after { content: ""; position: absolute; left: 0; right: 0; bottom: 3px; height: 1px; background: currentColor; transform: scaleX(0); transform-origin: left; transition: transform .35s var(--ease); }
+.topnav a:hover, .topnav a:focus-visible { color: var(--hero-ink); }
+.topnav a:hover::after, .topnav a:focus-visible::after { transform: scaleX(1); }
+.topbar { min-height: 52px; transition: background-color .4s var(--ease), border-color .4s var(--ease), box-shadow .4s var(--ease), -webkit-backdrop-filter .4s var(--ease), backdrop-filter .4s var(--ease); }
+.topbar::before { transition: opacity .4s var(--ease); }
+.topbar.is-top { background-color: transparent; background-image: none; border-color: transparent; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; }
+.topbar.is-top::before { opacity: 0; }
+@media (max-width: 420px) { .crumb-pre { display: none; } .topnav { gap: 16px; padding-right: 8px; } .topnav a { font-size: .9rem; } }
 
 /* light only (30 Oct, Rajla): the viewer can ask the page for dark; it stays light */
 :root { color-scheme: light !important; }
@@ -288,7 +312,8 @@ a:hover .bfly .wing, a:focus-visible .bfly .wing { animation: bf-flap-fast .32s 
 .hero-name { position: relative; margin: clamp(0px, 2.1vw, 30px) 0 0; font: 400 clamp(72px, 15.8vw, 228px)/1.12 var(--font-script); color: var(--hero-ink); letter-spacing: .015em; white-space: nowrap; }
 .hero-name .name-end { position: relative; }
 .baseline-probe { display: inline-block; width: 0; height: 0; vertical-align: baseline; }
-.hero-sub { margin: clamp(10px, 1.9vw, 28px) 0 0; max-width: min(1060px, 100%); font: 400 clamp(.90625rem, .8rem + .3vw, 1.0625rem)/1.7 var(--font-body); letter-spacing: .12em; color: var(--hero-sub); text-wrap: balance; }
+/* same size as the sub-line under "Selected work" (3 Nov, Rajla) */
+.hero-sub { margin: clamp(10px, 1.9vw, 28px) 0 0; max-width: min(1060px, 100%); font: 400 clamp(.85rem, .7rem + .55vw, 1.3125rem)/1.7 var(--font-body); letter-spacing: .12em; color: var(--hero-sub); text-wrap: balance; }
 .hero-claim { display: block; margin-bottom: .15em; }
 /* phones: a bigger name and a quieter intro under it (30 Oct, Rajla) */
 @media (max-width: 560px) {
@@ -324,8 +349,9 @@ a:hover .bfly .wing, a:focus-visible .bfly .wing { animation: bf-flap-fast .32s 
 .motion .hero-fade { animation: fade-up .8s var(--ease) both; animation-delay: var(--d, 0s); }
 
 /* Full-width row of project tiles */
-.hero-reel { margin-top: clamp(60px, 6vw, 88px); width: 100vw; margin-left: calc(50% - 50vw); overflow: hidden; }
-.reel-track { display: flex; gap: 16px; width: max-content; padding-block: 10px; animation: reel 84s linear infinite; }
+.hero-reel { margin-top: clamp(60px, 6vw, 88px); margin-bottom: -42px; width: 100vw; margin-left: calc(50% - 50vw); overflow: hidden; }
+/* room under the tiles so the hover shadow fades out instead of being cut off; the negative margin keeps the layout where it was (3 Nov, Rajla) */
+.reel-track { display: flex; gap: 16px; width: max-content; padding-block: 10px 52px; animation: reel 84s linear infinite; }
 .hero-reel:hover .reel-track { animation-play-state: paused; }
 /* drag the reel (28 Oct, Rajla): the script takes over from the CSS loop, so the
    row can be pulled either way with the mouse or a finger and glides on after
@@ -646,8 +672,8 @@ h2 { margin: 0; font: 700 clamp(2rem, 1.3rem + 2.8vw, 3.4rem)/1.02 var(--font-di
 .photo { position: relative; aspect-ratio: 4 / 5; max-width: 100%; display: grid; place-items: center; padding: 16px; background: var(--frame); border: 1.5px dashed var(--line); border-radius: 22px; color: var(--ink-2); font: 500 .78rem/1.5 var(--font-mono); text-align: center; rotate: -2deg; transition: rotate .6s var(--ease-pop); }
 .photo:hover { rotate: 0deg; }
 .about-text { display: flex; flex-direction: column; gap: 22px; min-width: 0; }
-/* bio in the same size as the facts under it (30 Oct, Rajla) */
-.about-text > p { margin: 0; max-width: 58ch; font: 400 1.02rem/1.6 var(--font-body); letter-spacing: .01em; }
+/* 18px on desktop, a step under the section taglines, easy to read (3 Nov, Rajla) */
+.about-text > p { margin: 0; max-width: 58ch; font: 400 clamp(1.02rem, .9rem + .3vw, 1.125rem)/1.65 var(--font-body); letter-spacing: .01em; }
 .inspect { background: var(--frame); border: 1px solid var(--line); border-radius: 18px; overflow: hidden; }
 .inspect-head { display: flex; justify-content: space-between; gap: 12px; padding: 12px 16px; border-bottom: 1px solid var(--line); font: 500 .74rem/1.2 var(--font-mono); color: var(--ink-2); }
 .inspect-head b { color: var(--ink); font-weight: 600; }
@@ -743,6 +769,8 @@ h2 { margin: 0; font: 700 clamp(2rem, 1.3rem + 2.8vw, 3.4rem)/1.02 var(--font-di
 .tail .inspect { background: none; border: 0; border-radius: 0; overflow: visible; }
 .tail .facts { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 26px 40px; padding-top: 6px; }
 .tail .facts div { display: block; padding: 0; border-bottom: 0; }
+/* an odd last fact takes the full row (3 Nov: "Right now" removed) */
+.tail .facts div:last-child:nth-child(odd) { grid-column: 1 / -1; }
 .tail .facts div:hover { background: none; }
 .tail .facts dt { font: 400 .72rem/1.4 var(--font-body); letter-spacing: .16em; text-transform: uppercase; color: var(--hero-sub); }
 .tail .facts dd { margin-top: 8px; font: 400 1.02rem/1.5 var(--font-body); letter-spacing: .01em; color: var(--ink); }
@@ -1010,11 +1038,10 @@ html.fp-open { overflow: hidden; }
 .tail .sticker:nth-of-type(4) { --gt: #7457D6; --gg: #B6A3F0; }
 </style>
 
-</head><body><div class="follow" aria-hidden="true"><div class="follow-in"><span class="follow-label">You</span><div class="follow-card"><div class="fc-screen"><i></i><i></i><i></i><i></i></div><b></b></div></div></div>
 
-<header class="topbar glass">
-  <a class="file" href="#top" aria-label="Rajla, back to top" data-cursor="Back to top"><span class="brand-mark"><svg class="bfly" viewBox="0 0 32 32" aria-hidden="true"><defs><radialGradient id="bfm-f" gradientUnits="userSpaceOnUse" cx="16.64" cy="15.63" r="13.55"><stop offset="0" stop-color="#02083A"></stop><stop offset="0.2" stop-color="#000F81"></stop><stop offset="0.5" stop-color="#0C5CE4"></stop><stop offset="0.8" stop-color="#2A98FF"></stop><stop offset="1" stop-color="#1E6AD8"></stop></radialGradient><radialGradient id="bfm-h" gradientUnits="userSpaceOnUse" cx="16.64" cy="16.78" r="9.91"><stop offset="0" stop-color="#02083A"></stop><stop offset="0.2" stop-color="#000F81"></stop><stop offset="0.5" stop-color="#0C5CE4"></stop><stop offset="0.8" stop-color="#2A98FF"></stop><stop offset="1" stop-color="#1E6AD8"></stop></radialGradient><linearGradient id="bfm-b" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#04060D"></stop><stop offset=".55" stop-color="#071022"></stop><stop offset="1" stop-color="#0C2552"></stop></linearGradient></defs><g class="wing"><path class="w-rim" d="M16.51 16.53C17 16.23 18.3 16.72 19.33 16.91C20.35 17.1 21.72 17.25 22.66 17.68C23.59 18.11 24.41 18.79 24.96 19.47C25.51 20.15 25.9 21.01 25.98 21.78C26.07 22.54 25.81 23.4 25.47 24.08C25.13 24.76 24.58 25.4 23.94 25.87C23.3 26.34 22.4 26.81 21.63 26.9C20.86 26.98 19.97 26.81 19.33 26.38C18.69 25.96 18.2 25.15 17.79 24.34C17.39 23.53 17.13 22.46 16.9 21.52C16.66 20.58 16.45 19.54 16.38 18.7C16.32 17.87 16.02 16.83 16.51 16.53z"></path><path fill="url(#bfm-h)" d="M16.53 16.57C16.95 16.31 18.05 16.73 18.92 16.89C19.8 17.06 20.96 17.18 21.75 17.55C22.55 17.91 23.24 18.49 23.71 19.07C24.18 19.65 24.51 20.37 24.58 21.03C24.65 21.68 24.44 22.41 24.15 22.99C23.86 23.57 23.39 24.11 22.84 24.51C22.3 24.91 21.54 25.31 20.88 25.38C20.23 25.45 19.47 25.31 18.92 24.94C18.38 24.58 17.96 23.89 17.62 23.2C17.27 22.51 17.06 21.61 16.86 20.81C16.66 20.01 16.48 19.12 16.42 18.42C16.37 17.71 16.11 16.82 16.53 16.57z"></path><circle class="sp-b" cx="24.34" cy="19.27" r="0.4"></circle><circle class="sp-b" cx="25.28" cy="21.4" r="0.4"></circle><circle class="sp-b" cx="24.81" cy="23.53" r="0.4"></circle><circle class="sp-w" cx="23.39" cy="25.19" r="0.4"></circle><circle class="sp-w" cx="21.26" cy="26.14" r="0.4"></circle><circle class="sp-w" cx="19.13" cy="25.66" r="0.4"></circle><path class="w-rim" d="M16.38 15.38C16.55 14.78 16.96 13.58 17.54 12.56C18.11 11.54 18.86 10.17 19.84 9.23C20.82 8.29 22.19 7.48 23.42 6.93C24.66 6.37 26.28 5.99 27.26 5.9C28.25 5.82 28.89 6.03 29.31 6.42C29.74 6.8 29.87 7.48 29.82 8.21C29.78 8.93 29.35 9.91 29.06 10.77C28.76 11.62 28.42 12.52 28.03 13.33C27.65 14.14 27.39 15.03 26.75 15.63C26.11 16.23 25.17 16.66 24.19 16.91C23.21 17.17 21.89 17.19 20.86 17.17C19.84 17.15 18.77 16.95 18.05 16.78C17.32 16.61 16.79 16.38 16.51 16.14C16.23 15.91 16.21 15.97 16.38 15.38z"></path><path fill="url(#bfm-f)" d="M16.42 15.41C16.57 14.89 16.92 13.86 17.42 12.97C17.91 12.09 18.56 10.91 19.41 10.1C20.26 9.28 21.44 8.58 22.51 8.1C23.58 7.62 24.98 7.29 25.83 7.22C26.68 7.14 27.23 7.33 27.6 7.66C27.97 7.99 28.08 8.58 28.04 9.21C28.01 9.84 27.64 10.69 27.38 11.42C27.12 12.16 26.83 12.94 26.49 13.64C26.16 14.34 25.94 15.12 25.39 15.63C24.83 16.15 24.02 16.52 23.17 16.74C22.32 16.96 21.18 16.98 20.29 16.96C19.41 16.94 18.49 16.78 17.86 16.63C17.23 16.48 16.77 16.28 16.53 16.07C16.29 15.87 16.27 15.93 16.42 15.41z"></path><circle class="sp-w" cx="22.98" cy="7.49" r="0.42"></circle><circle class="sp-w" cx="26.57" cy="6.54" r="0.42"></circle><circle class="sp-w" cx="28.49" cy="7.02" r="0.42"></circle><circle class="sp-w" cx="28.97" cy="8.69" r="0.42"></circle><circle class="sp-b" cx="28.25" cy="11.08" r="0.42"></circle><circle class="sp-b" cx="27.29" cy="13.48" r="0.42"></circle></g><g class="wing"><g transform="matrix(-1 0 0 1 32 0)"><path class="w-rim" d="M16.51 16.53C17 16.23 18.3 16.72 19.33 16.91C20.35 17.1 21.72 17.25 22.66 17.68C23.59 18.11 24.41 18.79 24.96 19.47C25.51 20.15 25.9 21.01 25.98 21.78C26.07 22.54 25.81 23.4 25.47 24.08C25.13 24.76 24.58 25.4 23.94 25.87C23.3 26.34 22.4 26.81 21.63 26.9C20.86 26.98 19.97 26.81 19.33 26.38C18.69 25.96 18.2 25.15 17.79 24.34C17.39 23.53 17.13 22.46 16.9 21.52C16.66 20.58 16.45 19.54 16.38 18.7C16.32 17.87 16.02 16.83 16.51 16.53z"></path><path fill="url(#bfm-h)" d="M16.53 16.57C16.95 16.31 18.05 16.73 18.92 16.89C19.8 17.06 20.96 17.18 21.75 17.55C22.55 17.91 23.24 18.49 23.71 19.07C24.18 19.65 24.51 20.37 24.58 21.03C24.65 21.68 24.44 22.41 24.15 22.99C23.86 23.57 23.39 24.11 22.84 24.51C22.3 24.91 21.54 25.31 20.88 25.38C20.23 25.45 19.47 25.31 18.92 24.94C18.38 24.58 17.96 23.89 17.62 23.2C17.27 22.51 17.06 21.61 16.86 20.81C16.66 20.01 16.48 19.12 16.42 18.42C16.37 17.71 16.11 16.82 16.53 16.57z"></path><circle class="sp-b" cx="24.34" cy="19.27" r="0.4"></circle><circle class="sp-b" cx="25.28" cy="21.4" r="0.4"></circle><circle class="sp-b" cx="24.81" cy="23.53" r="0.4"></circle><circle class="sp-w" cx="23.39" cy="25.19" r="0.4"></circle><circle class="sp-w" cx="21.26" cy="26.14" r="0.4"></circle><circle class="sp-w" cx="19.13" cy="25.66" r="0.4"></circle><path class="w-rim" d="M16.38 15.38C16.55 14.78 16.96 13.58 17.54 12.56C18.11 11.54 18.86 10.17 19.84 9.23C20.82 8.29 22.19 7.48 23.42 6.93C24.66 6.37 26.28 5.99 27.26 5.9C28.25 5.82 28.89 6.03 29.31 6.42C29.74 6.8 29.87 7.48 29.82 8.21C29.78 8.93 29.35 9.91 29.06 10.77C28.76 11.62 28.42 12.52 28.03 13.33C27.65 14.14 27.39 15.03 26.75 15.63C26.11 16.23 25.17 16.66 24.19 16.91C23.21 17.17 21.89 17.19 20.86 17.17C19.84 17.15 18.77 16.95 18.05 16.78C17.32 16.61 16.79 16.38 16.51 16.14C16.23 15.91 16.21 15.97 16.38 15.38z"></path><path fill="url(#bfm-f)" d="M16.42 15.41C16.57 14.89 16.92 13.86 17.42 12.97C17.91 12.09 18.56 10.91 19.41 10.1C20.26 9.28 21.44 8.58 22.51 8.1C23.58 7.62 24.98 7.29 25.83 7.22C26.68 7.14 27.23 7.33 27.6 7.66C27.97 7.99 28.08 8.58 28.04 9.21C28.01 9.84 27.64 10.69 27.38 11.42C27.12 12.16 26.83 12.94 26.49 13.64C26.16 14.34 25.94 15.12 25.39 15.63C24.83 16.15 24.02 16.52 23.17 16.74C22.32 16.96 21.18 16.98 20.29 16.96C19.41 16.94 18.49 16.78 17.86 16.63C17.23 16.48 16.77 16.28 16.53 16.07C16.29 15.87 16.27 15.93 16.42 15.41z"></path><circle class="sp-w" cx="22.98" cy="7.49" r="0.42"></circle><circle class="sp-w" cx="26.57" cy="6.54" r="0.42"></circle><circle class="sp-w" cx="28.49" cy="7.02" r="0.42"></circle><circle class="sp-w" cx="28.97" cy="8.69" r="0.42"></circle><circle class="sp-b" cx="28.25" cy="11.08" r="0.42"></circle><circle class="sp-b" cx="27.29" cy="13.48" r="0.42"></circle></g></g><path class="b-ant" d="M15.7 13.31C15.1 10.71 13.8 9.11 12.7 8.51M16.3 13.31C16.9 10.71 18.2 9.11 19.3 8.51"></path><circle class="b-tip" cx="12.7" cy="8.51" r=".55"></circle><circle class="b-tip" cx="19.3" cy="8.51" r=".55"></circle><ellipse fill="url(#bfm-b)" cx="16" cy="18.19" rx=".95" ry="4.1"></ellipse><circle fill="#04060D" cx="16" cy="13.91" r=".9"></circle></svg></span><span class="crumb">Portfolio / <b>Rajla</b></span></a>
-  <a class="btn btn-ink btn-small" href="#contact">Contact</a>
+</head><body><header class="topbar glass is-top">
+  <a class="file" href="#top" aria-label="Rajla, back to top" data-cursor="Back to top"><span class="brand-mark"><svg class="bfly" viewBox="0 0 32 32" aria-hidden="true"><defs><radialGradient id="bfm-f" gradientUnits="userSpaceOnUse" cx="16.64" cy="15.63" r="13.55"><stop offset="0" stop-color="#02083A"></stop><stop offset="0.2" stop-color="#000F81"></stop><stop offset="0.5" stop-color="#0C5CE4"></stop><stop offset="0.8" stop-color="#2A98FF"></stop><stop offset="1" stop-color="#1E6AD8"></stop></radialGradient><radialGradient id="bfm-h" gradientUnits="userSpaceOnUse" cx="16.64" cy="16.78" r="9.91"><stop offset="0" stop-color="#02083A"></stop><stop offset="0.2" stop-color="#000F81"></stop><stop offset="0.5" stop-color="#0C5CE4"></stop><stop offset="0.8" stop-color="#2A98FF"></stop><stop offset="1" stop-color="#1E6AD8"></stop></radialGradient><linearGradient id="bfm-b" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#04060D"></stop><stop offset=".55" stop-color="#071022"></stop><stop offset="1" stop-color="#0C2552"></stop></linearGradient></defs><g class="wing"><path class="w-rim" d="M16.51 16.53C17 16.23 18.3 16.72 19.33 16.91C20.35 17.1 21.72 17.25 22.66 17.68C23.59 18.11 24.41 18.79 24.96 19.47C25.51 20.15 25.9 21.01 25.98 21.78C26.07 22.54 25.81 23.4 25.47 24.08C25.13 24.76 24.58 25.4 23.94 25.87C23.3 26.34 22.4 26.81 21.63 26.9C20.86 26.98 19.97 26.81 19.33 26.38C18.69 25.96 18.2 25.15 17.79 24.34C17.39 23.53 17.13 22.46 16.9 21.52C16.66 20.58 16.45 19.54 16.38 18.7C16.32 17.87 16.02 16.83 16.51 16.53z"></path><path fill="url(#bfm-h)" d="M16.53 16.57C16.95 16.31 18.05 16.73 18.92 16.89C19.8 17.06 20.96 17.18 21.75 17.55C22.55 17.91 23.24 18.49 23.71 19.07C24.18 19.65 24.51 20.37 24.58 21.03C24.65 21.68 24.44 22.41 24.15 22.99C23.86 23.57 23.39 24.11 22.84 24.51C22.3 24.91 21.54 25.31 20.88 25.38C20.23 25.45 19.47 25.31 18.92 24.94C18.38 24.58 17.96 23.89 17.62 23.2C17.27 22.51 17.06 21.61 16.86 20.81C16.66 20.01 16.48 19.12 16.42 18.42C16.37 17.71 16.11 16.82 16.53 16.57z"></path><circle class="sp-b" cx="24.34" cy="19.27" r="0.4"></circle><circle class="sp-b" cx="25.28" cy="21.4" r="0.4"></circle><circle class="sp-b" cx="24.81" cy="23.53" r="0.4"></circle><circle class="sp-w" cx="23.39" cy="25.19" r="0.4"></circle><circle class="sp-w" cx="21.26" cy="26.14" r="0.4"></circle><circle class="sp-w" cx="19.13" cy="25.66" r="0.4"></circle><path class="w-rim" d="M16.38 15.38C16.55 14.78 16.96 13.58 17.54 12.56C18.11 11.54 18.86 10.17 19.84 9.23C20.82 8.29 22.19 7.48 23.42 6.93C24.66 6.37 26.28 5.99 27.26 5.9C28.25 5.82 28.89 6.03 29.31 6.42C29.74 6.8 29.87 7.48 29.82 8.21C29.78 8.93 29.35 9.91 29.06 10.77C28.76 11.62 28.42 12.52 28.03 13.33C27.65 14.14 27.39 15.03 26.75 15.63C26.11 16.23 25.17 16.66 24.19 16.91C23.21 17.17 21.89 17.19 20.86 17.17C19.84 17.15 18.77 16.95 18.05 16.78C17.32 16.61 16.79 16.38 16.51 16.14C16.23 15.91 16.21 15.97 16.38 15.38z"></path><path fill="url(#bfm-f)" d="M16.42 15.41C16.57 14.89 16.92 13.86 17.42 12.97C17.91 12.09 18.56 10.91 19.41 10.1C20.26 9.28 21.44 8.58 22.51 8.1C23.58 7.62 24.98 7.29 25.83 7.22C26.68 7.14 27.23 7.33 27.6 7.66C27.97 7.99 28.08 8.58 28.04 9.21C28.01 9.84 27.64 10.69 27.38 11.42C27.12 12.16 26.83 12.94 26.49 13.64C26.16 14.34 25.94 15.12 25.39 15.63C24.83 16.15 24.02 16.52 23.17 16.74C22.32 16.96 21.18 16.98 20.29 16.96C19.41 16.94 18.49 16.78 17.86 16.63C17.23 16.48 16.77 16.28 16.53 16.07C16.29 15.87 16.27 15.93 16.42 15.41z"></path><circle class="sp-w" cx="22.98" cy="7.49" r="0.42"></circle><circle class="sp-w" cx="26.57" cy="6.54" r="0.42"></circle><circle class="sp-w" cx="28.49" cy="7.02" r="0.42"></circle><circle class="sp-w" cx="28.97" cy="8.69" r="0.42"></circle><circle class="sp-b" cx="28.25" cy="11.08" r="0.42"></circle><circle class="sp-b" cx="27.29" cy="13.48" r="0.42"></circle></g><g class="wing"><g transform="matrix(-1 0 0 1 32 0)"><path class="w-rim" d="M16.51 16.53C17 16.23 18.3 16.72 19.33 16.91C20.35 17.1 21.72 17.25 22.66 17.68C23.59 18.11 24.41 18.79 24.96 19.47C25.51 20.15 25.9 21.01 25.98 21.78C26.07 22.54 25.81 23.4 25.47 24.08C25.13 24.76 24.58 25.4 23.94 25.87C23.3 26.34 22.4 26.81 21.63 26.9C20.86 26.98 19.97 26.81 19.33 26.38C18.69 25.96 18.2 25.15 17.79 24.34C17.39 23.53 17.13 22.46 16.9 21.52C16.66 20.58 16.45 19.54 16.38 18.7C16.32 17.87 16.02 16.83 16.51 16.53z"></path><path fill="url(#bfm-h)" d="M16.53 16.57C16.95 16.31 18.05 16.73 18.92 16.89C19.8 17.06 20.96 17.18 21.75 17.55C22.55 17.91 23.24 18.49 23.71 19.07C24.18 19.65 24.51 20.37 24.58 21.03C24.65 21.68 24.44 22.41 24.15 22.99C23.86 23.57 23.39 24.11 22.84 24.51C22.3 24.91 21.54 25.31 20.88 25.38C20.23 25.45 19.47 25.31 18.92 24.94C18.38 24.58 17.96 23.89 17.62 23.2C17.27 22.51 17.06 21.61 16.86 20.81C16.66 20.01 16.48 19.12 16.42 18.42C16.37 17.71 16.11 16.82 16.53 16.57z"></path><circle class="sp-b" cx="24.34" cy="19.27" r="0.4"></circle><circle class="sp-b" cx="25.28" cy="21.4" r="0.4"></circle><circle class="sp-b" cx="24.81" cy="23.53" r="0.4"></circle><circle class="sp-w" cx="23.39" cy="25.19" r="0.4"></circle><circle class="sp-w" cx="21.26" cy="26.14" r="0.4"></circle><circle class="sp-w" cx="19.13" cy="25.66" r="0.4"></circle><path class="w-rim" d="M16.38 15.38C16.55 14.78 16.96 13.58 17.54 12.56C18.11 11.54 18.86 10.17 19.84 9.23C20.82 8.29 22.19 7.48 23.42 6.93C24.66 6.37 26.28 5.99 27.26 5.9C28.25 5.82 28.89 6.03 29.31 6.42C29.74 6.8 29.87 7.48 29.82 8.21C29.78 8.93 29.35 9.91 29.06 10.77C28.76 11.62 28.42 12.52 28.03 13.33C27.65 14.14 27.39 15.03 26.75 15.63C26.11 16.23 25.17 16.66 24.19 16.91C23.21 17.17 21.89 17.19 20.86 17.17C19.84 17.15 18.77 16.95 18.05 16.78C17.32 16.61 16.79 16.38 16.51 16.14C16.23 15.91 16.21 15.97 16.38 15.38z"></path><path fill="url(#bfm-f)" d="M16.42 15.41C16.57 14.89 16.92 13.86 17.42 12.97C17.91 12.09 18.56 10.91 19.41 10.1C20.26 9.28 21.44 8.58 22.51 8.1C23.58 7.62 24.98 7.29 25.83 7.22C26.68 7.14 27.23 7.33 27.6 7.66C27.97 7.99 28.08 8.58 28.04 9.21C28.01 9.84 27.64 10.69 27.38 11.42C27.12 12.16 26.83 12.94 26.49 13.64C26.16 14.34 25.94 15.12 25.39 15.63C24.83 16.15 24.02 16.52 23.17 16.74C22.32 16.96 21.18 16.98 20.29 16.96C19.41 16.94 18.49 16.78 17.86 16.63C17.23 16.48 16.77 16.28 16.53 16.07C16.29 15.87 16.27 15.93 16.42 15.41z"></path><circle class="sp-w" cx="22.98" cy="7.49" r="0.42"></circle><circle class="sp-w" cx="26.57" cy="6.54" r="0.42"></circle><circle class="sp-w" cx="28.49" cy="7.02" r="0.42"></circle><circle class="sp-w" cx="28.97" cy="8.69" r="0.42"></circle><circle class="sp-b" cx="28.25" cy="11.08" r="0.42"></circle><circle class="sp-b" cx="27.29" cy="13.48" r="0.42"></circle></g></g><path class="b-ant" d="M15.7 13.31C15.1 10.71 13.8 9.11 12.7 8.51M16.3 13.31C16.9 10.71 18.2 9.11 19.3 8.51"></path><circle class="b-tip" cx="12.7" cy="8.51" r=".55"></circle><circle class="b-tip" cx="19.3" cy="8.51" r=".55"></circle><ellipse fill="url(#bfm-b)" cx="16" cy="18.19" rx=".95" ry="4.1"></ellipse><circle fill="#04060D" cx="16" cy="13.91" r=".9"></circle></svg></span><span class="crumb"><span class="crumb-pre">Portfolio / </span><b>Rajla</b></span></a>
+  <nav class="topnav" aria-label="Sections"><a href="#work" data-cursor="Work">Work</a><a href="#contact" data-cursor="Contact">Contact</a><a class="nav-cv" href="Rajla-Zekaj-CV.pdf" target="_blank" rel="noopener" data-cursor="Open CV">CV <span aria-hidden="true">↗</span></a></nav>
 </header>
 
 <main id="top">
@@ -1023,8 +1050,8 @@ html.fp-open { overflow: hidden; }
   <section class="hero" aria-labelledby="hero-title">
     <div class="hero-copy">
       <p class="eyebrow hero-fade" style="--d: 0s">Product designer · UI/UX</p>
-      <h1 id="hero-title" class="hero-name" data-noedit="" aria-label="Hi, I'm Rajla">Hi, i’m Rajl<span class="name-end">a</span><span class="baseline-probe" aria-hidden="true"></span></h1>
-      <p class="hero-sub hero-fade" style="--d: .55s"><span class="hero-claim">I turn ideas into products people trust and come back to.</span>Web and mobile, from the first user interview to the handoff file.</p>
+      <h1 id="hero-title" class="hero-name" data-noedit="" aria-label="Hi, I'm Rajla">Hi, I’m Rajl<span class="name-end">a</span><span class="baseline-probe" aria-hidden="true"></span></h1>
+      <p class="hero-sub hero-fade" style="--d: .55s"><span class="hero-claim">I design products that save people’s time and earn their trust.</span>Web and mobile, from the first user interview to the handoff file.</p>
       <a class="hero-cta hero-fade roll" style="--d: .7s" href="#contact" aria-label="Get in touch" data-cursor="Get in touch"><span class="roll-text" aria-hidden="true"><span class="roll-ch" style="--i:0" data-ch="G">G</span><span class="roll-ch" style="--i:1" data-ch="e">e</span><span class="roll-ch" style="--i:2" data-ch="t">t</span><span class="roll-ch" style="--i:3" data-ch="&nbsp;">&nbsp;</span><span class="roll-ch" style="--i:4" data-ch="i">i</span><span class="roll-ch" style="--i:5" data-ch="n">n</span><span class="roll-ch" style="--i:6" data-ch="&nbsp;">&nbsp;</span><span class="roll-ch" style="--i:7" data-ch="t">t</span><span class="roll-ch" style="--i:8" data-ch="o">o</span><span class="roll-ch" style="--i:9" data-ch="u">u</span><span class="roll-ch" style="--i:10" data-ch="c">c</span><span class="roll-ch" style="--i:11" data-ch="h">h</span></span></a>
     </div>
 
@@ -1032,10 +1059,7 @@ html.fp-open { overflow: hidden; }
       <div class="reel-track"><div class="reel-tile has-img"><img class="reel-img" src="img/reel-web-security-720.webp" srcset="img/reel-web-security-360.webp 360w, img/reel-web-security-720.webp 720w" sizes="(max-width: 830px) 200px, 347px" width="720" height="720" alt="Nebula service menu: stacked cards with Web Security picked, between Blockchain Solutions and Digital Onboarding" loading="eager"></div><div class="reel-tile has-img"><img class="reel-img" src="img/reel-nebula-ahead-720.webp" srcset="img/reel-nebula-ahead-360.webp 360w, img/reel-nebula-ahead-720.webp 720w" sizes="(max-width: 830px) 200px, 347px" width="720" height="720" alt="Nebula poster: two kayaks racing on blue water under the line &quot;Technology that keeps you ahead&quot;" loading="eager"></div><div class="reel-tile has-img"><img class="reel-img" src="img/reel-tokitoki-events-720.webp" srcset="img/reel-tokitoki-events-360.webp 360w, img/reel-tokitoki-events-720.webp 720w" sizes="(max-width: 830px) 200px, 347px" width="720" height="720" alt="TOKITOKI teaser: a calendar page marked 12 with a hand-drawn pair of stars, 'Events you can’t miss' and 'Coming soon, tell a friend…'" loading="eager"></div><div class="reel-tile has-img"><img class="reel-img" src="img/reel-pok-pay-720.webp" srcset="img/reel-pok-pay-360.webp 360w, img/reel-pok-pay-720.webp 720w" sizes="(max-width: 830px) 200px, 347px" width="720" height="720" alt="POK payment screen: a blue Visa card on a phone with a Done check mark" loading="eager"></div><div class="reel-tile has-img"><img class="reel-img" src="img/reel-tokitoki-receipt-720.webp" srcset="img/reel-tokitoki-receipt-360.webp 360w, img/reel-tokitoki-receipt-720.webp 720w" sizes="(max-width: 830px) 200px, 347px" width="720" height="720" alt="TOKITOKI About Us page styled as an official receipt on orange paper with a yellow star" loading="eager"></div><div class="reel-tile has-img"><img class="reel-img" src="img/reel-nebula-around-720.webp" srcset="img/reel-nebula-around-360.webp 360w, img/reel-nebula-around-720.webp 720w" sizes="(max-width: 830px) 200px, 347px" width="720" height="720" alt="Nebula poster in a subway station: &quot;Designed around you&quot;, a silhouette in a blue circle" loading="eager"></div><div class="reel-tile has-img" aria-hidden="true"><img class="reel-img" src="img/reel-web-security-720.webp" srcset="img/reel-web-security-360.webp 360w, img/reel-web-security-720.webp 720w" sizes="(max-width: 830px) 200px, 347px" width="720" height="720" alt="" loading="lazy"></div><div class="reel-tile has-img" aria-hidden="true"><img class="reel-img" src="img/reel-nebula-ahead-720.webp" srcset="img/reel-nebula-ahead-360.webp 360w, img/reel-nebula-ahead-720.webp 720w" sizes="(max-width: 830px) 200px, 347px" width="720" height="720" alt="" loading="lazy"></div><div class="reel-tile has-img" aria-hidden="true"><img class="reel-img" src="img/reel-tokitoki-events-720.webp" srcset="img/reel-tokitoki-events-360.webp 360w, img/reel-tokitoki-events-720.webp 720w" sizes="(max-width: 830px) 200px, 347px" width="720" height="720" alt="" loading="lazy"></div><div class="reel-tile has-img" aria-hidden="true"><img class="reel-img" src="img/reel-pok-pay-720.webp" srcset="img/reel-pok-pay-360.webp 360w, img/reel-pok-pay-720.webp 720w" sizes="(max-width: 830px) 200px, 347px" width="720" height="720" alt="" loading="lazy"></div><div class="reel-tile has-img" aria-hidden="true"><img class="reel-img" src="img/reel-tokitoki-receipt-720.webp" srcset="img/reel-tokitoki-receipt-360.webp 360w, img/reel-tokitoki-receipt-720.webp 720w" sizes="(max-width: 830px) 200px, 347px" width="720" height="720" alt="" loading="lazy"></div><div class="reel-tile has-img" aria-hidden="true"><img class="reel-img" src="img/reel-nebula-around-720.webp" srcset="img/reel-nebula-around-360.webp 360w, img/reel-nebula-around-720.webp 720w" sizes="(max-width: 830px) 200px, 347px" width="720" height="720" alt="" loading="lazy"></div></div>
     </div>
 
-    <aside class="note">
-      <span class="note-pin">1</span>
-      <p><span class="note-title">Hero</span>Six of your images drift by in a slow loop and pause when someone points at one. To swap or add one, send me a square image (at least 700 × 700 px).</p>
-    </aside>
+    
   </section>
 
   <!-- ======================= WORK ======================= -->
@@ -1056,17 +1080,14 @@ html.fp-open { overflow: hidden; }
         <a class="bento-tile b work-art" href="tokitoki.html" data-cursor="TOKITOKI case study" style="--ox: -2.618%; --oy: -4.246%; --ow: 105.236%; --oh: 108.493%"><img class="work-img" src="img/work-tokitoki-820.webp" srcset="img/work-tokitoki-820.webp 820w, img/work-tokitoki-1608.webp 1608w" sizes="(max-width: 700px) 96vw, 804px" width="1608" height="1022" alt="TOKITOKI brand pieces: the orange TOKI TOKI sticker, a Post Malone with Jelly Roll concert ticket, an illustration of two friends and a vinyl record" decoding="async" draggable="false"></a>
       </div>
     </div>
-    <aside class="note">
-      <span class="note-pin">2</span>
-      <p><span class="note-title">Projects</span>Filled from your Figma (RPortfolio): FinFlux in the first row, TOKITOKI in the second, with the butterflies in the empty tiles. The FinFlux and TOKITOKI tiles open their case studies (finflux.html, tokitoki.html). For more projects, design another row in Figma and I'll add it.</p>
-    </aside>
+    
   </section>
 
   <!-- ======================= PROCESS ======================= -->
   <section id="process" class="section process" aria-labelledby="process-title">
     <div class="process-head">
       <h2 id="process-title" class="work-title">From idea to handoff</h2>
-      <p class="work-sub">How I work: four steps that keep users at the centre<br>and the team in the loop.</p>
+      <p class="work-sub">Four steps, where AI does the busywork and real <br>people make the calls</p>
     </div>
 
     <ol class="steps look-glass" data-anim="stagger">
@@ -1201,10 +1222,7 @@ html.fp-open { overflow: hidden; }
       </li>
     </ol>
 
-    <aside class="note">
-      <span class="note-pin">3</span>
-      <p><span class="note-title">Process</span>Example steps and side notes. Change the words to match how you really work. The drawings can stay, or you can swap them for small screenshots from your projects.</p>
-    </aside>
+    
   </section>
 
   <!-- ======================= PLAYGROUND ======================= -->
@@ -1242,44 +1260,37 @@ html.fp-open { overflow: hidden; }
         <button class="btn btn-ghost btn-small btn-tidy" type="button" data-tidy="">Tidy up</button>
       </div>
     </div>
-    <aside class="note">
-      <span class="note-pin">4</span>
-      <p><span class="note-title">Show you build</span>Reviewers are seeing more portfolios with a playground of small apps people built themselves. It shows curiosity and that you learn fast. Replace these examples with your own experiments.</p>
-    </aside>
+    
   </section>
 
   <!-- ======================= ABOUT ======================= -->
   <section id="about" class="section tail" aria-labelledby="about-title">
     <div class="process-head">
-      <h2 id="about-title" class="work-title">Hi, I'm Rajla Zekaj.</h2>
+      <h2 id="about-title" class="work-title">Hi, I’m Rajla Zekaj.</h2>
     </div>
     <div class="about-grid">
       <div class="photo has-photo" data-anim="reveal"><img src="img/about-rajla-v2-990.webp" srcset="img/about-rajla-v2-640.webp 640w, img/about-rajla-v2-990.webp 990w" sizes="(max-width: 800px) 320px, 420px" width="990" height="1304" loading="lazy" decoding="async" alt="Rajla on a café terrace under a black and white striped awning, in a black blazer, smiling"></div>
       <div class="about-text">
-        <p>I’ve always been the curious one who notices how people feel. Design turned that into my job: I listen, find what gets in people’s way, and design products that feel simple and safe to use.I want to grow as a product designer in a team that builds and cares for real people.</p>
+        <p>I’ve always been the curious one who notices how people feel. <br>Design turned that into my job: I listen, find what gets in people’s way, and design products that feel simple and safe to use. Every extra step costs someone time. Every confusing one costs their trust. I design to give both back. <br>I design for people.</p>
         <div class="inspect" data-anim="reveal">
           <dl class="facts">
             <div><dt>Based in</dt><dd>Tirana, Albania&nbsp;· open to remote</dd></div>
             <div><dt>Languages</dt><dd>English, Albanian</dd></div>
             <div><dt>Outside design</dt><dd>Travelling, sport, painting and make-up.</dd></div>
-            <div><dt>Right now</dt><dd>Training for a half marathon, and always trying new design features</dd></div>
           </dl>
         </div>
         <div class="reach" id="contact" data-anim="reveal">
           <div class="reach-grid">
             <div><p class="reach-label">Get in touch</p><a class="reach-mail" href="mailto:zekajrajla@gmail.com">zekajrajla@gmail.com</a></div>
-            <div><p class="reach-label">LinkedIn</p><a class="reach-mail reach-in" href="https://www.linkedin.com/search/results/people/?keywords=Rajla%20Zekaj" target="_blank" rel="noopener" data-cursor="Open LinkedIn">Rajla Zekaj<svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg></a></div>
+            <div><p class="reach-label">LinkedIn</p><a class="reach-mail reach-in" href="https://www.linkedin.com/in/rajla-zekaj-210739365" target="_blank" rel="noopener" data-cursor="Open LinkedIn">Rajla Zekaj<svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg></a></div>
           </div>
           <div class="reach-btns">
-            <a class="reach-btn reach-cv roll" href="#" aria-label="Download CV" data-todo="My CV will be ready to download here very soon."><span class="roll-text" aria-hidden="true"><span class="roll-ch" style="--i:0" data-ch="D">D</span><span class="roll-ch" style="--i:1" data-ch="o">o</span><span class="roll-ch" style="--i:2" data-ch="w">w</span><span class="roll-ch" style="--i:3" data-ch="n">n</span><span class="roll-ch" style="--i:4" data-ch="l">l</span><span class="roll-ch" style="--i:5" data-ch="o">o</span><span class="roll-ch" style="--i:6" data-ch="a">a</span><span class="roll-ch" style="--i:7" data-ch="d">d</span><span class="roll-ch" style="--i:8" data-ch="&nbsp;">&nbsp;</span><span class="roll-ch" style="--i:9" data-ch="C">C</span><span class="roll-ch" style="--i:10" data-ch="V">V</span></span><svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="true"><path d="M8 2.5v8M4.5 7.5 8 11l3.5-3.5M3 13.5h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg></a>
+            <a class="reach-btn reach-cv roll" href="Rajla-Zekaj-CV.pdf" target="_blank" rel="noopener" aria-label="Download CV (PDF, opens in a new tab)"><span class="roll-text" aria-hidden="true"><span class="roll-ch" style="--i:0" data-ch="D">D</span><span class="roll-ch" style="--i:1" data-ch="o">o</span><span class="roll-ch" style="--i:2" data-ch="w">w</span><span class="roll-ch" style="--i:3" data-ch="n">n</span><span class="roll-ch" style="--i:4" data-ch="l">l</span><span class="roll-ch" style="--i:5" data-ch="o">o</span><span class="roll-ch" style="--i:6" data-ch="a">a</span><span class="roll-ch" style="--i:7" data-ch="d">d</span><span class="roll-ch" style="--i:8" data-ch="&nbsp;">&nbsp;</span><span class="roll-ch" style="--i:9" data-ch="C">C</span><span class="roll-ch" style="--i:10" data-ch="V">V</span></span><svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="true"><path d="M8 2.5v8M4.5 7.5 8 11l3.5-3.5M3 13.5h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg></a>
           </div>
         </div>
       </div>
     </div>
-    <aside class="note">
-      <span class="note-pin">5</span>
-      <p><span class="note-title">About</span>Put your photo here rather than in the hero. Reviewers use this section to picture working with you, so add something beyond design.</p>
-    </aside>
+    
   </section>
 
 </main>
@@ -1349,8 +1360,8 @@ html.fp-open { overflow: hidden; }
       <div class="fp-top">
         <div class="fp-intro">
           <h2 id="testing-title">Testing</h2>
-          <p class="fp-lead">Before I call a design done, I put it next to what was there before, then let people try it for themselves.</p>
-          <p>For each project I compare the original state with my redesign, screen by screen, and check every change against what people told me in research. Even then, I keep asking people for honest feedback, so the product keeps growing around their needs.</p>
+          <p class="fp-lead">I test rough versions with real people early. Twenty minutes with a user settles what an hour of debate can’t. The polish goes into the version that worked.</p>
+          <p>For each project I compare the original state with my design, step by step, and check every change against what people told me in research. Even then, I keep asking people for honest feedback, so the product keeps growing around their needs.</p>
         </div>
         <div class="fp-bfly fp-tulip" aria-hidden="true">
           <svg viewBox="0 0 240 200">
@@ -1373,7 +1384,7 @@ html.fp-open { overflow: hidden; }
       </div>
 
       <div class="fp-papers-head">
-        <p class="fp-hand" aria-hidden="true"><span data-edit="">before vs. my redesign</span><svg class="fp-arrow" viewBox="0 0 48 56"><path d="M4 8C22 6 36 14 38 30C39 38 36 44 32 50M24 42l8 9 7-10"></path></svg></p>
+        <p class="fp-hand" aria-hidden="true"><span data-edit="">Before vs. my redesign</span><svg class="fp-arrow" viewBox="0 0 48 56"><path d="M4 8C22 6 36 14 38 30C39 38 36 44 32 50M24 42l8 9 7-10"></path></svg></p>
       </div>
       <div class="fp-tabs" role="tablist" aria-label="Before and after by project">
         <button class="fp-tabbtn" type="button" role="tab" id="tb-ff" aria-controls="tp-ff" aria-selected="true" data-hash="testing-finflux">FinFlux<span>crypto trading website</span></button>
@@ -1407,7 +1418,7 @@ html.fp-open { overflow: hidden; }
         <div class="fp-intro">
           <h2 id="research-title">Research</h2>
           <p class="fp-lead">Before I design a single screen, I find out who it’s for and what gets in their way.</p>
-          <p>For each project I talk to people one to one (seven or more interviews), take apart how competitors do it, and read the studies that already exist. Then I map every finding to a design decision, so nothing in the final product is a guess.</p>
+          <p>For each project I talk to people one to one, take apart how competitors do it, and read the studies that already exist. Then I map every finding to a design decision, so nothing in the final product is a guess.</p>
         </div>
         <div class="fp-bfly fp-bulb" aria-hidden="true">
           <svg viewBox="0 0 240 200">
@@ -1466,7 +1477,7 @@ html.fp-open { overflow: hidden; }
         <div class="fp-intro">
           <h2 id="idea-title">Ideation &amp; AI</h2>
           <p class="fp-lead">Every project starts on paper. I sketch layouts, flows and site maps by hand to explore lots of directions fast, then take the strongest into Figma.&nbsp;</p>
-          <p>AI helps me widen the options before I commit. I still make the call on what moves forward.<br><br>Below are some of my drafts (please don’t judge my handwriting). Messy, but they’re where good experiences start.</p>
+          <p>AI helps me sort interview notes, draft copy and create quick prototypes. I check everything it gives me against what real people told me, and I note why I kept or dropped each idea. AI widens the options; I still make the call.<br></p>
         </div>
         <div class="fp-bfly" aria-hidden="true">
           <svg viewBox="0 0 240 200">
@@ -1511,7 +1522,7 @@ html.fp-open { overflow: hidden; }
         </figure>
         <figure class="fp-paper" style="--r: 0.6045; --tilt: -1deg">
           <button class="fp-sheet" type="button" data-full="img/sketch-finflux-otc-full.webp" data-w="1209" data-h="2000" aria-label="Enlarge the FinFlux OTC trading flow"><img src="img/sketch-finflux-otc-thumb.webp" width="387" height="640" alt="Hand-drawn user flow for over-the-counter trading in FinFlux" loading="lazy" decoding="async"></button>
-          <figcaption><b>FinFlux OTC trading</b><em>User flow</em>Over-the-counter trading, needed for the first release: a menu entry, a terms pop-up, a request form and a "we'll contact you" message.</figcaption>
+          <figcaption><b>FinFlux OTC trading</b><em>User flow</em>Over-the-counter trading, needed for the first release: a menu entry, a terms pop-up, a request form and a “we’ll contact you” message.</figcaption>
         </figure>
       </div>
     </div>
@@ -1598,7 +1609,7 @@ html.fp-open { overflow: hidden; }
     document.addEventListener('click', function (e) {
       if (!on || !e.target.closest) return;
       var a = e.target.closest('a[href]'), h = a && a.getAttribute('href');
-      if (!h || a.target === '_blank' || !/^[^:?#\/]+\.html(#.*)?$/i.test(h)) return;
+      if (!h || a.target === '_blank' || !/^[^:?#\/]+\.(html|pdf)(#.*)?$/i.test(h)) return;
       var i = h.indexOf('#');
       a.setAttribute('href', (i < 0 ? h : h.slice(0, i)) + '?__frame_t=' + key + (i < 0 ? '' : h.slice(i)));
     }, true);
@@ -1775,6 +1786,16 @@ html.fp-open { overflow: hidden; }
     addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(runPx); } }, { passive: true });
     runPx();
   }
+
+  /* top bar: flat at the top of the page, glass once you scroll (3 Nov) */
+  (function () {
+    var bar = document.querySelector('.topbar');
+    if (!bar) return;
+    var ticking = false;
+    function set() { ticking = false; bar.classList.toggle('is-top', scrollY < 12); }
+    addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(set); } }, { passive: true });
+    set();
+  })();
 
   /* ---------- Liquid glass sheen follows the pointer ---------- */
   document.querySelectorAll('.glass').forEach(function (g) {
